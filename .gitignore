@@ -1,0 +1,21 @@
+# sensitive data
+.env
+
+# dependencies
+node_modules/
+
+# misc
+npm-debug.log*
+testem.log
+.DS_STORE
+_gsdata_
+
+# project files
+/.vscode
+*.code-workspace
+
+# AoC results, input & descriptions
+/years/**/description.md
+/years/**/input-example.txt
+/years/**/input.txt
+/years/**/answers.ts
