@@ -1,3 +1,9 @@
+# Advent of Code
+
+https://adventofcode.com
+
+## TODO
+
 - [x] Submit result for input on Part 1 -> if successful, create test case and forgo future submitting
 - [x] Submit result for input on Part 2 -> if successful, create test case and forgo future submitting
 - [ ] Split years into `lib` and `src` folders
