@@ -16,6 +16,6 @@ _gsdata_
 
 # AoC results, input & descriptions
 /years/**/description.md
-/years/**/input-example.txt
+/years/**/input*.txt
 /years/**/input.txt
 /years/**/answers.ts
