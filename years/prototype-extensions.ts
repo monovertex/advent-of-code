@@ -21,6 +21,7 @@ interface Array<T> {
     first(): T;
     last(): T;
     rest(): Array<T>;
+    sortAscendingNumbers(): Array<number>;
 }
 
 Array.prototype.findLastIndex = function (predicate) {
@@ -133,6 +134,10 @@ Array.prototype.last = function () {
 
 Array.prototype.rest = function () {
     return this.slice(1);
+}
+
+Array.prototype.sortAscendingNumbers = function () {
+    return this.toNumbers().sort((a, b) => a - b);
 }
 
 interface String {
