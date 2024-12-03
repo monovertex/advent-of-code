@@ -22,6 +22,7 @@ interface Array<T> {
     last(): T;
     rest(): Array<T>;
     sortAscendingNumbers(): Array<number>;
+    sortDescendingNumbers(): Array<number>;
 }
 
 Array.prototype.findLastIndex = function (predicate) {
@@ -140,6 +141,10 @@ Array.prototype.sortAscendingNumbers = function () {
     return this.toNumbers().sort((a, b) => a - b);
 }
 
+Array.prototype.sortDescendingNumbers = function () {
+    return this.toNumbers().sort((a, b) => b - a);
+}
+
 interface String {
     splitByNewLine(): string[];
     splitByDoubleNewLine(): string[];
@@ -221,10 +226,15 @@ Set.prototype.valuesArray = function () {
 
 interface Number {
     isEven(): boolean;
+    isNegative(): boolean;
 }
 
 Number.prototype.isEven = function () {
     return (this as number) % 2 === 0;
+}
+
+Number.prototype.isNegative = function () {
+    return (this as number) < 0;
 }
 
 interface Math {
