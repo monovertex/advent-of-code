@@ -149,6 +149,7 @@ interface String {
     splitByNewLine(): string[];
     splitByDoubleNewLine(): string[];
     splitByComma(): string[];
+    splitByPipe(): string[];
     splitByWhitespace(): string[];
     toArray(): string[];
     toNumbers(): number[];
@@ -167,6 +168,10 @@ String.prototype.splitByDoubleNewLine = function () {
 
 String.prototype.splitByComma = function () {
     return this.split(/, ?/);
+}
+
+String.prototype.splitByPipe = function () {
+    return this.split(/\| ?/);
 }
 
 String.prototype.splitByWhitespace = function () {
