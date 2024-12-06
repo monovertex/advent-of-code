@@ -31,6 +31,7 @@ export interface IGraph {
     breadthFirstSearch: Function,
     shortestDistance: Function,
     aStar: Function,
+    [util.inspect.custom]: () => string,
 }
 
 export function breadthFirstSearch(
@@ -545,6 +546,10 @@ export class Matrix<T> implements IMatrix<T> {
             .map(row => row.join(''))
             .reverse()
             .join('\n');
+    }
+
+    [util.inspect.custom]() {
+        return this.toString();
     }
 
     getValue(point: Point2D): T {
