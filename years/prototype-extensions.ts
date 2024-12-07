@@ -3,7 +3,7 @@ interface Array<T> {
     reject(predicate: Function): Array<T>;
     without(...items: Array<T>): Array<T>;
     countBy(predicate: (item: T, index: number) => boolean): number;
-    sum(): number;
+    sum(): T;
     multiply(): number;
     max(): number;
     min(): number;
@@ -23,6 +23,7 @@ interface Array<T> {
     rest(): Array<T>;
     sortAscendingNumbers(): Array<number>;
     sortDescendingNumbers(): Array<number>;
+    isEmpty(): boolean;
 }
 
 Array.prototype.findLastIndex = function (predicate) {
@@ -145,11 +146,16 @@ Array.prototype.sortDescendingNumbers = function () {
     return this.toNumbers().sort((a, b) => b - a);
 }
 
+Array.prototype.isEmpty = function () {
+    return this.length === 0;
+}
+
 interface String {
     splitByNewLine(): string[];
     splitByDoubleNewLine(): string[];
     splitByComma(): string[];
     splitByPipe(): string[];
+    splitByColon(): string[];
     splitByWhitespace(): string[];
     toArray(): string[];
     toNumbers(): number[];
@@ -172,6 +178,10 @@ String.prototype.splitByComma = function () {
 
 String.prototype.splitByPipe = function () {
     return this.split(/\| ?/);
+}
+
+String.prototype.splitByColon = function () {
+    return this.split(/: ?/);
 }
 
 String.prototype.splitByWhitespace = function () {
