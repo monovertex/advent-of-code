@@ -380,6 +380,14 @@ export class Point2D<T extends number | bigint = number> implements IGraphNode {
     getManhattanDistanceTo(point: Point2D<T>): number {
         return Math.abs(this.x - point.x) + Math.abs(this.y - point.y);
     }
+
+    getDistanceTo(point: Point2D<T>): T {
+        return Math.sqrt((point.x - this.x) * (point.x - this.x) + (point.y - this.y) * (point.y - this.y)) as T;
+    }
+
+    getSlopeTo(point: Point2D<T>): T {
+        return ((point.y - this.y) / (point.x - this.x)) as T;
+    }
 }
 
 export class Point3D<T extends number | bigint = number> extends Point2D<T> {
