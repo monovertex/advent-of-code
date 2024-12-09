@@ -40,7 +40,7 @@ export function solvePart2(input: string): any {
         .splitByNewLine()
         .map(line => line.splitByWhitespace())
         .map(([,, code]: string[]) => {
-            const [direction, ...distanceFragments] = code.substring(2, 8).split('').reverse();
+            const [direction, ...distanceFragments] = code.substring(2, 8).toArray().reverse();
             const distance = parseInt(distanceFragments.reverse().join(''), 16);
             return [direction, distance] as [string, number];
         });

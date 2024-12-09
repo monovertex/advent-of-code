@@ -55,7 +55,7 @@ const backtrackSolution = memoize(
 );
 
 export function solve(input: [string, number[]][]) {
-    return input.map(([springs, damagedCounts]) => backtrackSolution(springs.split(''), damagedCounts)).sum();
+    return input.map(([springs, damagedCounts]) => backtrackSolution(springs.toArray(), damagedCounts)).sum();
 }
 
 export function solvePart1(input: string): number {

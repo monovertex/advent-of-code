@@ -1,4 +1,5 @@
 interface Array<T> {
+    findLast(predicate: Function): T;
     findLastIndex(predicate: Function): number;
     reject(predicate: Function): Array<T>;
     without(...items: Array<T>): Array<T>;
@@ -24,6 +25,13 @@ interface Array<T> {
     sortAscendingNumbers(): Array<number>;
     sortDescendingNumbers(): Array<number>;
     isEmpty(): boolean;
+}
+
+Array.prototype.findLast = function (predicate) {
+    for (let i = this.length - 1; i >= 0; i--) {
+        if (predicate(this[i])) return this[i];
+    }
+    return undefined;
 }
 
 Array.prototype.findLastIndex = function (predicate) {
