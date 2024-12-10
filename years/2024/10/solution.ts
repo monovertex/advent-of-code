@@ -11,6 +11,7 @@ function computeTrailScore(matrix: IMatrix<number>, startPoint: Point2D): number
         if (value === 9) uniqeEndingPoints.add(point.toString());
         return false;
     };
+    // BFS because we don't need to re-visit points.
     matrix.breadthFirstSearch(startPoint, matcher, isNeighborValid);
     return uniqeEndingPoints.size;
 }
