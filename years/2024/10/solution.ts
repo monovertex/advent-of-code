@@ -16,14 +16,6 @@ function computeTrailScore(matrix: IMatrix<number>, startPoint: Point2D): number
     return uniqeEndingPoints.size;
 }
 
-export function solvePart1(input: string): number {
-    const matrix = stringToNumberMatrix(input);
-    return matrix
-        .filterPoints((point: Point2D, value: number) => value === 0)
-        .map((point) => computeTrailScore(matrix, point))
-        .sum();
-}
-
 function computeTrailRating(matrix: IMatrix<number>, startPoint: Point2D): number {
     let rating = 0;
     const walkNode = (node: IGraphNode) => {
@@ -33,10 +25,18 @@ function computeTrailRating(matrix: IMatrix<number>, startPoint: Point2D): numbe
     return rating;
 }
 
-export function solvePart2(input: string): number {
+function solve(input: string, computeScore: (matrix: IMatrix<number>, startPoint: Point2D) => number): number {
     const matrix = stringToNumberMatrix(input);
     return matrix
         .filterPoints((point: Point2D, value: number) => value === 0)
-        .map((point) => computeTrailRating(matrix, point))
+        .map((point) => computeScore(matrix, point))
         .sum();
+}
+
+export function solvePart1(input: string): number {
+    return solve(input, computeTrailScore);
+}
+
+export function solvePart2(input: string): number {
+    return solve(input, computeTrailRating);
 }
