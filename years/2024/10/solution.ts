@@ -1,4 +1,4 @@
-import { IGraphNode, Matrix, Point2D, stringToNumberMatrix } from '../../common';
+import { Matrix, Point2D, stringToNumberMatrix } from '../../common';
 import '../../prototype-extensions';
 
 function isNeighborValid(_point: Point2D, value: number, _neighborPoint: Point2D, neighborValue: number) {
@@ -18,8 +18,8 @@ function computeTrailScore(matrix: Matrix<number>, startPoint: Point2D): number 
 
 function computeTrailRating(matrix: Matrix<number>, startPoint: Point2D): number {
     let rating = 0;
-    const walkNode = (node: IGraphNode) => {
-        if (matrix.getValue(node as Point2D) === 9) rating++;
+    const walkNode = (_point: Point2D, value: number) => {
+        if (value === 9) rating++;
     };
     matrix.walk(startPoint, walkNode, isNeighborValid);
     return rating;
