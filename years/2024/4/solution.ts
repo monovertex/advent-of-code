@@ -1,4 +1,4 @@
-import { ALL_DIRECTION_VECTORS_2D, DIAGONAL_DIRECTION_VECTORS_2D_MAP, DIAGONAL_DIRECTIONS, Matrix, Point2D, stringToStringMatrix } from '../../common';
+import { ALL_DIRECTION_VECTORS_2D, DIAGONAL_DIRECTION_VECTORS_2D_MAP, DIAGONAL_DIRECTIONS, IMatrix, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 type Pattern = {
@@ -6,7 +6,7 @@ type Pattern = {
     coordinates: Point2D[],
 }
 
-function matchPattern(pattern: Pattern, startingPoint: Point2D, matrix: Matrix<string>) {
+function matchPattern(pattern: Pattern, startingPoint: Point2D, matrix: IMatrix<string>) {
     return pattern.coordinates.every((vector: Point2D, index: number) => {
         const point = startingPoint.add(vector);
         if (!matrix.isPointInBounds(point)) return false;

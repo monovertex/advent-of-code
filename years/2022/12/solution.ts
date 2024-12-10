@@ -1,10 +1,10 @@
-import { Matrix, Point2D, stringToStringMatrix } from '../../common';
+import { IMatrix, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const START_POINT_VALUE = 'S';
 const DEST_POINT_VALUE = 'E';
 
-function inputToMap(input: string): [Matrix<number>, Point2D, Point2D] {
+function inputToMap(input: string): [IMatrix<number>, Point2D, Point2D] {
     const matrix = stringToStringMatrix(input);
     const startPoint = matrix.findPointOfValue(START_POINT_VALUE);
     const destPoint = matrix.findPointOfValue(DEST_POINT_VALUE);

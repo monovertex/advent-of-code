@@ -1,4 +1,4 @@
-import { Matrix, Point2D, stringToStringMatrix } from '../../common';
+import { IMatrix, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const SYMBOL_GROUND = '.';
@@ -32,14 +32,14 @@ function findAntinodePoint(pointA: Point2D, pointB: Point2D): [Point2D, Point2D]
     return [new Point2D(x1, y1), new Point2D(x2, y2)];
 }
 
-function findSimpleAntinodePoints(_matrix: Matrix<string>, pointA: Point2D, pointB: Point2D): Point2D[] {
+function findSimpleAntinodePoints(_matrix: IMatrix<string>, pointA: Point2D, pointB: Point2D): Point2D[] {
     const antinodes = [...findAntinodePoint(pointA, pointB), ...findAntinodePoint(pointB, pointA)];
     return antinodes.reject((point: Point2D) => point.equals(pointA) || point.equals(pointB));
 }
 
 function solve(
     input: string,
-    findAntinodePoints: (matrix: Matrix<string>, pointA: Point2D, pointB: Point2D) => Point2D[]
+    findAntinodePoints: (matrix: IMatrix<string>, pointA: Point2D, pointB: Point2D) => Point2D[]
 ): number {
     const matrix = stringToStringMatrix(input);
     const antennaGroups = matrix.reducePoints((result, point: Point2D, value: string) => {
@@ -69,7 +69,7 @@ export function solvePart1(input: string): number {
     return solve(input, findSimpleAntinodePoints);
 }
 
-function findAllResonantAntinodePoints(matrix: Matrix<string>, pointA: Point2D, pointB: Point2D): Point2D[] {
+function findAllResonantAntinodePoints(matrix: IMatrix<string>, pointA: Point2D, pointB: Point2D): Point2D[] {
     const antinodePoints = [];
     const slope = pointA.getSlopeTo(pointB);
     // Given slope, and iterating every X value, find integer Y values.

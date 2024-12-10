@@ -1,16 +1,16 @@
-import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, stringToStringMatrix, Point2D, Matrix } from '../../common';
+import { IMatrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const isDigit = (char: string) => /\d/.test(char);
 
-const isLeftCharacterDigit = (matrix: Matrix<string>, point: Point2D) => {
+const isLeftCharacterDigit = (matrix: IMatrix<string>, point: Point2D) => {
     const leftPoint = point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.X_NEGATIVE)!);
     if (!matrix.isPointInBounds(leftPoint)) return false;
     const leftValue = matrix.getValue(leftPoint);
     return isDigit(leftValue);
 }
 
-const extractNumbers = (matrix: Matrix<string>) => {
+const extractNumbers = (matrix: IMatrix<string>) => {
     return matrix.reducePoints((accumulator, point, value) => {
         // If the current point doesn't contain a digit, or if the point on the left is a digit
         // (meaning the number is already started), skip it.
@@ -34,7 +34,7 @@ const extractNumbers = (matrix: Matrix<string>) => {
     }, [] as [Point2D[], number][]);
 };
 
-const filterNumbersByAdjacentPoints = (matrix: Matrix<string>, list: [Point2D[], number][], test: (point: Point2D, value: string) => Boolean) => {
+const filterNumbersByAdjacentPoints = (matrix: IMatrix<string>, list: [Point2D[], number][], test: (point: Point2D, value: string) => Boolean) => {
     return list.filter(([numberPoints]) => numberPoints.some((point) => {
         for (const adjacentPoint of point.allNeighbors()) {
             if (!matrix.isPointInBounds(adjacentPoint)) continue;

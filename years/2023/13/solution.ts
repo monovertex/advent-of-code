@@ -1,4 +1,4 @@
-import { Matrix, stringToStringMatrix } from '../../common';
+import { stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 function getVerticalReflectionOffset(pattern: string[][], tolerableErrorCount: number): number | null {

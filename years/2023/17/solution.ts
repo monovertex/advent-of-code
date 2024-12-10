@@ -1,4 +1,4 @@
-import { GraphNode, IGraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, aStar, stringToNumberMatrix } from '../../common';
+import { GraphNode, IGraphNode, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, aStar, stringToNumberMatrix } from '../../common';
 import '../../prototype-extensions';
 
 class TileNode extends GraphNode {

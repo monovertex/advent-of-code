@@ -2,6 +2,8 @@ import { GraphNode, findLeastCommonMultipleOfList } from '../../common';
 import '../../prototype-extensions';
 
 class Node extends GraphNode {
+    neighbors: Node[] = [];
+
     toString() {
         return `${this.identifier} -> ${this.neighbors.map((neighbor) => (neighbor as Node).identifier).join(',')}`;
     }

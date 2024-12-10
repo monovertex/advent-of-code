@@ -1,5 +1,5 @@
 import '../../prototype-extensions';
-import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D, Point2D, stringToNumberMatrix } from '../../common';
+import { IMatrix, ORTHOGONAL_DIRECTION_VECTORS_2D, Point2D, stringToNumberMatrix } from '../../common';
 
 function isTreeVisible(treeLines: number[][], treeHeight: number) {
     return treeLines.some((line: number[]) => line.max() < treeHeight);
@@ -12,7 +12,7 @@ function getScenicScore(treeLines: number[][], treeHeight: number) {
     }, 1);
 }
 
-function getTreeLines(matrix: Matrix<number>, point: Point2D): number[][] {
+function getTreeLines(matrix: IMatrix<number>, point: Point2D): number[][] {
     return ORTHOGONAL_DIRECTION_VECTORS_2D.map((vector) => {
         const line: number[] = [];
         for (let newPoint = point.add(vector); ; newPoint = newPoint.add(vector)) {

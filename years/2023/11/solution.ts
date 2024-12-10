@@ -1,4 +1,4 @@
-import { Matrix, Point2D, stringToStringMatrix } from '../../common';
+import { Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const TILE_TYPE = {

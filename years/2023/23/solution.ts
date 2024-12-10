@@ -1,4 +1,4 @@
-import { GraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, WeightedDirectedGraph, stringToStringMatrix } from '../../common';
+import { GraphNode, IMatrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, WeightedDirectedGraph, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const TILE_TYPE = Object.freeze({
@@ -10,7 +10,7 @@ const TILE_TYPE = Object.freeze({
     SLOPE_DOWN: 'v',
 });
 
-function getValidNeighbors(matrix: Matrix<string>, point: Point2D, getNeighbors: (point: Point2D, value: string) => Point2D[], visitedPointKeys: Set<string> = new Set()) {
+function getValidNeighbors(matrix: IMatrix<string>, point: Point2D, getNeighbors: (point: Point2D, value: string) => Point2D[], visitedPointKeys: Set<string> = new Set()) {
     return getNeighbors(point, matrix.getValue(point)).filter((neighborPoint: Point2D) => {
         if (!matrix.isPointInBounds(neighborPoint)) return false;
         const neighborValue = matrix.getValue(neighborPoint);
@@ -21,7 +21,7 @@ function getValidNeighbors(matrix: Matrix<string>, point: Point2D, getNeighbors:
 }
 
 function traverseEdge(
-    matrix: Matrix<string>,
+    matrix: IMatrix<string>,
     originPoint: Point2D,
     firstEdgePoint: Point2D,
     junctionPointKeys: string[],
@@ -42,7 +42,7 @@ function traverseEdge(
     }
 }
 
-function buildGraph(matrix: Matrix<string>, getNeighbors: (point: Point2D, value: string) => Point2D[]): [WeightedDirectedGraph, GraphNode, GraphNode] {
+function buildGraph(matrix: IMatrix<string>, getNeighbors: (point: Point2D, value: string) => Point2D[]): [WeightedDirectedGraph, GraphNode, GraphNode] {
     const topRowIndex = matrix.height - 1;
     const startPoint = matrix.findPoint((point: Point2D, value: string) => point.y === topRowIndex && value === TILE_TYPE.PATH)!;
     const destinationPoint = matrix.findPoint((point: Point2D, value: string) => point.y === 0 && value === TILE_TYPE.PATH)!;
@@ -56,21 +56,25 @@ function buildGraph(matrix: Matrix<string>, getNeighbors: (point: Point2D, value
         const uniqueKey = point.getUniqueKey();
         return [uniqueKey, new GraphNode(uniqueKey)];
     }));
+    const graph = new WeightedDirectedGraph(GraphNode, nodes.valuesArray());
     const junctionPointKeys = nodes.keysArray();
-    const edges: [GraphNode, GraphNode, number][] = junctionPoints
-        .flatMap((junctionPoint: Point2D) => getValidNeighbors(matrix, junctionPoint, getNeighbors)
-            .map((neighborPoint: Point2D) =>
-                traverseEdge(matrix, junctionPoint, neighborPoint, junctionPointKeys, getNeighbors))
-            .filter(Boolean) as [Point2D, Point2D, number][]
+    junctionPoints
+        .flatMap((junctionPoint: Point2D) =>
+            getValidNeighbors(matrix, junctionPoint, getNeighbors)
+                .map((neighborPoint: Point2D) =>
+                    traverseEdge(matrix, junctionPoint, neighborPoint, junctionPointKeys, getNeighbors))
+                .filter(Boolean) as [Point2D, Point2D, number][]
         )
-        .map(([originPoint, destinationPoint, distance]: [Point2D, Point2D, number]) => [
-            nodes.get(originPoint.getUniqueKey())!,
-            nodes.get(destinationPoint.getUniqueKey())!,
-            distance
-        ]);
+        .forEach(([originPoint, destinationPoint, distance]: [Point2D, Point2D, number]) =>
+            graph.addWeightedEdge(
+                nodes.get(originPoint.getUniqueKey())!,
+                nodes.get(destinationPoint.getUniqueKey())!,
+                distance
+            )
+        );
 
     return [
-        new WeightedDirectedGraph(nodes.valuesArray(), edges),
+        graph,
         nodes.get(startPoint.getUniqueKey())!,
         nodes.get(destinationPoint.getUniqueKey())!,
     ];
@@ -84,7 +88,7 @@ function traverseGraph(
     distance: number = 0,
 ): number {
     if (currentNode === endNode) return distance;
-    const edges = graph.getEdgesForNode(currentNode);
+    const edges = graph.getNodeNeighborsAndWeights(currentNode);
     return edges.map(([neighborNode, weight]) => {
         if (visitedNodes.includes(neighborNode)) return 0;
         return traverseGraph(graph, neighborNode, endNode, [...visitedNodes, currentNode], distance + weight);
@@ -96,8 +100,8 @@ function solve(input: string, getNeighbors: (point: Point2D, value: string) => P
     const [graph, startNode, destinationNode] = buildGraph(matrix, getNeighbors);
     // Simple optimization to avoid traversing the extra edges. Especially useful for the end node,
     // where there can be a junction and we always need to take the destionation path.
-    const [resolvedStartNode, offsetStartDistance] = graph.getEdgesForNode(startNode).first();
-    const [resolvedEndNode, offsetEndDistance] = graph.getEdgesForNode(destinationNode).first() ?? [destinationNode, 0];
+    const [resolvedStartNode, offsetStartDistance] = graph.getNodeNeighborsAndWeights(startNode).first();
+    const [resolvedEndNode, offsetEndDistance] = graph.getNodeNeighborsAndWeights(destinationNode).first() ?? [destinationNode, 0];
     return traverseGraph(graph, resolvedStartNode, resolvedEndNode)! + offsetStartDistance + offsetEndDistance;
 }
 
