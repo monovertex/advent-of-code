@@ -28,6 +28,7 @@ export interface IGraphNode {
 }
 
 export interface IGraph {
+    walk: Function,
     breadthFirstSearch: Function,
     shortestDistance: Function,
     aStar: Function,
@@ -174,6 +175,18 @@ export class Graph<NodeType extends IGraphNode = GraphNode> implements IGraph {
 
     [util.inspect.custom]() {
         return this.toString();
+    }
+
+    walk(
+        startNode: NodeType,
+        walkNode: (node: NodeType, distance: number) => any,
+    ): any {
+        const getNeighbors = (node: NodeType) => this.getNodeNeighbors(node) as IGraphNode[];
+        return walkGraph(
+            startNode,
+            walkNode as (node: IGraphNode, distance: number) => any,
+            getNeighbors as (node: IGraphNode) => IGraphNode[],
+        ) as any;
     }
 
     breadthFirstSearch(
@@ -506,50 +519,7 @@ export const ORTHOGONAL_DIRECTION_VECTORS_3D_MAP: Map<ORTHOGONAL_DIRECTIONS, Poi
 
 export const ORTHOGONAL_DIRECTION_VECTORS_3D: Point3D<number>[] = ORTHOGONAL_DIRECTION_VECTORS_3D_MAP.valuesArray();
 
-export interface IMatrix<T> extends IGraph {
-    data: T[][];
-    width: number;
-    height: number;
-
-    getValue(point: Point2D): T;
-    setValue(point: Point2D, value: T): void;
-    isPointInBounds(point: Point2D): boolean;
-    forEachPoint(callback: (point: Point2D, value: T) => void): void;
-    mapPoints<T2>(callback: (point: Point2D, value: T) => T2): IMatrix<T2>;
-    reducePoints<TAccumulator>(callback: (accumulator: TAccumulator, point: Point2D, value: T) => TAccumulator, accumulator: TAccumulator): TAccumulator;
-    findPoint(callback: (point: Point2D, value: T) => boolean): Point2D | null;
-    findPointOfValue(value: T): Point2D | null;
-    filterPoints(callback: (point: Point2D, value: T) => boolean): Point2D[];
-    sum(): number;
-    walk(
-        startPoint: Point2D,
-        walkPoint: (node: Point2D, value: T, distance: number) => any,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
-    ): any;
-    breadthFirstSearch(
-        startPoint: Point2D,
-        matcher: (point: Point2D, value: T, distance: number) => boolean,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
-    ): [Point2D, number] | null;
-    shortestDistance(
-        startPoint: Point2D,
-        endPoint: Point2D,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
-    ): number | null;
-    aStar(
-        startPoint: Point2D,
-        endPoint: Point2D,
-        calculateCost: (node: Point2D, neighbor: Point2D) => number,
-        calculateHeuristic?: (node: Point2D, neighbor: Point2D) => number,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[],
-    ): number | null;
-}
-
-export class Matrix<T> implements IMatrix<T> {
+export class Matrix<T> implements IGraph {
     data: T[][];
 
     constructor(data: T[][]) {
@@ -596,7 +566,7 @@ export class Matrix<T> implements IMatrix<T> {
         });
     }
 
-    mapPoints<T2>(callback: (point: Point2D, value: T) => T2): IMatrix<T2> {
+    mapPoints<T2>(callback: (point: Point2D, value: T) => T2): Matrix<T2> {
         return new Matrix(this.data
             .map((column, x) => column
                 .map((value, y) => callback(new Point2D(x, y), value))));
@@ -746,14 +716,14 @@ export class PriorityQueue<T> {
     }
 }
 
-export function stringToStringMatrix(input: string): IMatrix<string> {
+export function stringToStringMatrix(input: string): Matrix<string> {
     // Matrices are read from top to bottom, but they are stored in an XY axis system,
     // which is bottom to top. Thus, we reverse the list of rows before zipping them.
     const [firstRow, ...restRows] = input.splitByNewLine().reverse().map((row) => row.toArray());
     return new Matrix<string>(firstRow.zip(...restRows));
 }
 
-export function stringToNumberMatrix(input: string): IMatrix<number> {
+export function stringToNumberMatrix(input: string): Matrix<number> {
     return stringToStringMatrix(input).mapPoints((_, value) => Number(value));
 }
 

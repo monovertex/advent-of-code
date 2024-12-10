@@ -1,4 +1,4 @@
-import { IMatrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, findIndexOfPoint, stringToStringMatrix } from '../../common';
+import { Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, findIndexOfPoint, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const enum TILE_TYPE {
@@ -41,7 +41,7 @@ const TILE_DIRECTION_COMPATIBILITY_MAP = new Map([
 
 const FLIP_TILE_TYPES = [TILE_TYPE.VERTICAL, TILE_TYPE.NORTH_EAST, TILE_TYPE.NORTH_WEST];
 
-function parseInput(input: string): [IMatrix<TILE_TYPE>, Point2D] {
+function parseInput(input: string): [Matrix<TILE_TYPE>, Point2D] {
     const matrix = stringToStringMatrix(input).mapPoints((point, value) => TILE_MAP.get(value)!);
     const startingPoint = matrix.findPointOfValue(TILE_TYPE.START)!;
 
@@ -63,7 +63,7 @@ function parseInput(input: string): [IMatrix<TILE_TYPE>, Point2D] {
 }
 
 function breadthFirstSearch(
-    matrix: IMatrix<TILE_TYPE>,
+    matrix: Matrix<TILE_TYPE>,
     startingPoint: Point2D,
     matcher: (point: Point2D, value: TILE_TYPE, distance: number) => boolean
 ) {

@@ -1,4 +1,4 @@
-import { IMatrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix } from '../../common';
+import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const GUARD_ORIENTATION_SYMBOL_TO_DIRECTION = new Map([
@@ -23,7 +23,7 @@ function rotateDirectionRight(direction: ORTHOGONAL_DIRECTIONS) {
     throw new Error('Invalid direction');
 }
 
-function parseInput(input: string): [IMatrix<string>, Point2D, ORTHOGONAL_DIRECTIONS] {
+function parseInput(input: string): [Matrix<string>, Point2D, ORTHOGONAL_DIRECTIONS] {
     const matrix = stringToStringMatrix(input);
     const startingPoint = matrix.findPoint((point: Point2D, value: string) => GUARD_ORIENTATION_SYMBOL_TO_DIRECTION.has(value))!;
     const startingDirection = GUARD_ORIENTATION_SYMBOL_TO_DIRECTION.get(matrix.getValue(startingPoint))!;
@@ -34,7 +34,7 @@ function pointAndDirectionToString(point: Point2D, direction: ORTHOGONAL_DIRECTI
     return `${point.toString()}-${direction}`;
 }
 
-function simulateWalk(matrix: IMatrix<string>, startingPoint: Point2D, startingDirection: ORTHOGONAL_DIRECTIONS): [Point2D[], boolean] {
+function simulateWalk(matrix: Matrix<string>, startingPoint: Point2D, startingDirection: ORTHOGONAL_DIRECTIONS): [Point2D[], boolean] {
     let currentPoint = startingPoint;
     let currentDirection = startingDirection;
     let isLooping = false;

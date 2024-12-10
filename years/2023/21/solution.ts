@@ -1,4 +1,4 @@
-import { IMatrix, Point2D, stringToStringMatrix } from '../../common';
+import { Matrix, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const TILE_TYPES = {
@@ -7,7 +7,7 @@ const TILE_TYPES = {
     START: 'S',
 };
 
-function wrapPointToBoundaries(matrix: IMatrix<String>, point: Point2D): Point2D {
+function wrapPointToBoundaries(matrix: Matrix<String>, point: Point2D): Point2D {
     return new Point2D(
         ((point.x % matrix.width) + matrix.width) % matrix.width,
         ((point.y % matrix.height) + matrix.height) % matrix.height

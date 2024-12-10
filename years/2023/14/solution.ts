@@ -1,4 +1,4 @@
-import { IMatrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '../../common';
+import { Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const TILE_TYPE = {
@@ -16,7 +16,7 @@ const SHIFT_CYCLE_DIRECTIONS = [
 
 const PART_2_CYCLE_COUNT = 1_000_000_000;
 
-function shiftRocks(matrix: IMatrix<string>, direction: ORTHOGONAL_DIRECTIONS): void {
+function shiftRocks(matrix: Matrix<string>, direction: ORTHOGONAL_DIRECTIONS): void {
     while (true) {
         let rocksShifted = false;
         matrix.forEachPoint((point: Point2D, value: string) => {
@@ -32,11 +32,11 @@ function shiftRocks(matrix: IMatrix<string>, direction: ORTHOGONAL_DIRECTIONS): 
     }
 }
 
-function cycleShiftRocks(matrix: IMatrix<string>): void {
+function cycleShiftRocks(matrix: Matrix<string>): void {
     for (const direction of SHIFT_CYCLE_DIRECTIONS) shiftRocks(matrix, direction);
 }
 
-function calculateLoad(matrix: IMatrix<string>): number {
+function calculateLoad(matrix: Matrix<string>): number {
     return matrix.mapPoints<number>((point: Point2D, value: string) => {
         if (value === TILE_TYPE.ROUND_ROCK) return point.y + 1;
         return 0;

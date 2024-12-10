@@ -1,11 +1,11 @@
-import { IGraphNode, IMatrix, Point2D, stringToNumberMatrix } from '../../common';
+import { IGraphNode, Matrix, Point2D, stringToNumberMatrix } from '../../common';
 import '../../prototype-extensions';
 
 function isNeighborValid(_point: Point2D, value: number, _neighborPoint: Point2D, neighborValue: number) {
     return neighborValue === value + 1;
 }
 
-function computeTrailScore(matrix: IMatrix<number>, startPoint: Point2D): number {
+function computeTrailScore(matrix: Matrix<number>, startPoint: Point2D): number {
     const uniqeEndingPoints = new Set<string>();
     const matcher = (point: Point2D, value: number) => {
         if (value === 9) uniqeEndingPoints.add(point.toString());
@@ -16,7 +16,7 @@ function computeTrailScore(matrix: IMatrix<number>, startPoint: Point2D): number
     return uniqeEndingPoints.size;
 }
 
-function computeTrailRating(matrix: IMatrix<number>, startPoint: Point2D): number {
+function computeTrailRating(matrix: Matrix<number>, startPoint: Point2D): number {
     let rating = 0;
     const walkNode = (node: IGraphNode) => {
         if (matrix.getValue(node as Point2D) === 9) rating++;
@@ -25,7 +25,7 @@ function computeTrailRating(matrix: IMatrix<number>, startPoint: Point2D): numbe
     return rating;
 }
 
-function solve(input: string, computeScore: (matrix: IMatrix<number>, startPoint: Point2D) => number): number {
+function solve(input: string, computeScore: (matrix: Matrix<number>, startPoint: Point2D) => number): number {
     const matrix = stringToNumberMatrix(input);
     return matrix
         .filterPoints((point: Point2D, value: number) => value === 0)

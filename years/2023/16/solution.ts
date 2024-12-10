@@ -1,4 +1,4 @@
-import { IMatrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '../../common';
+import { Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const TILE_TYPE = {
@@ -53,7 +53,7 @@ function getNewBeamDirections(beamDirection: ORTHOGONAL_DIRECTIONS, tileType: st
     return [];
 }
 
-export function simulateBeam(matrix: IMatrix<string>, startingPoint: Point2D, startingDirection: ORTHOGONAL_DIRECTIONS): number {
+export function simulateBeam(matrix: Matrix<string>, startingPoint: Point2D, startingDirection: ORTHOGONAL_DIRECTIONS): number {
     const beams: [Point2D, ORTHOGONAL_DIRECTIONS][] = [[startingPoint, startingDirection]];
     const beamCache = new Set<string>();
 

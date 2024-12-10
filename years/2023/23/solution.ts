@@ -1,4 +1,4 @@
-import { GraphNode, IMatrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, WeightedDirectedGraph, stringToStringMatrix } from '../../common';
+import { GraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, WeightedDirectedGraph, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const TILE_TYPE = Object.freeze({
@@ -10,7 +10,7 @@ const TILE_TYPE = Object.freeze({
     SLOPE_DOWN: 'v',
 });
 
-function getValidNeighbors(matrix: IMatrix<string>, point: Point2D, getNeighbors: (point: Point2D, value: string) => Point2D[], visitedPointKeys: Set<string> = new Set()) {
+function getValidNeighbors(matrix: Matrix<string>, point: Point2D, getNeighbors: (point: Point2D, value: string) => Point2D[], visitedPointKeys: Set<string> = new Set()) {
     return getNeighbors(point, matrix.getValue(point)).filter((neighborPoint: Point2D) => {
         if (!matrix.isPointInBounds(neighborPoint)) return false;
         const neighborValue = matrix.getValue(neighborPoint);
@@ -21,7 +21,7 @@ function getValidNeighbors(matrix: IMatrix<string>, point: Point2D, getNeighbors
 }
 
 function traverseEdge(
-    matrix: IMatrix<string>,
+    matrix: Matrix<string>,
     originPoint: Point2D,
     firstEdgePoint: Point2D,
     junctionPointKeys: string[],
@@ -42,7 +42,7 @@ function traverseEdge(
     }
 }
 
-function buildGraph(matrix: IMatrix<string>, getNeighbors: (point: Point2D, value: string) => Point2D[]): [WeightedDirectedGraph, GraphNode, GraphNode] {
+function buildGraph(matrix: Matrix<string>, getNeighbors: (point: Point2D, value: string) => Point2D[]): [WeightedDirectedGraph, GraphNode, GraphNode] {
     const topRowIndex = matrix.height - 1;
     const startPoint = matrix.findPoint((point: Point2D, value: string) => point.y === topRowIndex && value === TILE_TYPE.PATH)!;
     const destinationPoint = matrix.findPoint((point: Point2D, value: string) => point.y === 0 && value === TILE_TYPE.PATH)!;
