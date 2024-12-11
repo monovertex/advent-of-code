@@ -250,6 +250,7 @@ Set.prototype.valuesArray = function () {
 interface Number {
     isEven(): boolean;
     isNegative(): boolean;
+    digitCount(): number;
 }
 
 Number.prototype.isEven = function () {
@@ -258,6 +259,28 @@ Number.prototype.isEven = function () {
 
 Number.prototype.isNegative = function () {
     return (this as number) < 0;
+}
+
+Number.prototype.digitCount = function () {
+    return String(this).length;
+}
+
+interface BigInt {
+    isEven(): boolean;
+    isNegative(): boolean;
+    digitCount(): number;
+}
+
+BigInt.prototype.isEven = function () {
+    return (this as bigint) % 2n === 0n;
+}
+
+BigInt.prototype.isNegative = function () {
+    return (this as bigint) < 0n;
+}
+
+BigInt.prototype.digitCount = function () {
+    return String(this).length;
 }
 
 interface Math {

@@ -59,7 +59,7 @@ class File {
 }
 
 function parseInput(input: string): File[] {
-    const items = input.toArray().toNumbers();
+    const items = input.toNumbers();
     let id = 0;
     return items.map((item, index) => {
         if (index.isEven()) {
