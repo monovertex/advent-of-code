@@ -72,8 +72,6 @@ export function analyzeRegions(input: string): Region[] {
                 // increase the perimeter and analyze the side.
                 if (!isNeighborInSameRegion) {
                     regionPerimeter += 1;
-                    // console.log('checking side', currentPoint, direction);
-                    // console.log(sides.map((side) => side.toString()));
                     let side = sides.find((side) => side.isPointOnSide(direction, currentPoint));
                     if (!side) {
                         side = new Side(direction);
@@ -98,8 +96,6 @@ export function analyzeRegions(input: string): Region[] {
                 }
             }
         }
-
-        // console.log(sides.map((side) => side.toString()));
 
         // We have to merge sides, in case they didn't touch during the analysis.
         const mergedSides = sides.reduce((result: Side[], side: Side) => {
@@ -131,6 +127,5 @@ export function solvePart1(input: string): number {
 
 export function solvePart2(input: string): number {
     const regions = analyzeRegions(input);
-    // console.log(regions);
     return regions.map((region) => region.area * region.sides).sum();
 }
