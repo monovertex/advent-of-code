@@ -1,4 +1,4 @@
-import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix } from '../../common';
+import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix, rotateDirectionClockwise } from '../../common';
 import '../../prototype-extensions';
 
 const GUARD_ORIENTATION_SYMBOL_TO_DIRECTION = new Map([
@@ -8,20 +8,6 @@ const GUARD_ORIENTATION_SYMBOL_TO_DIRECTION = new Map([
     ['<', ORTHOGONAL_DIRECTIONS.X_NEGATIVE],
 ]);
 const OBSTACLE_SYMBOL = '#';
-
-function rotateDirectionRight(direction: ORTHOGONAL_DIRECTIONS) {
-    switch (direction) {
-        case ORTHOGONAL_DIRECTIONS.X_POSITIVE:
-            return ORTHOGONAL_DIRECTIONS.Y_NEGATIVE;
-        case ORTHOGONAL_DIRECTIONS.Y_NEGATIVE:
-            return ORTHOGONAL_DIRECTIONS.X_NEGATIVE;
-        case ORTHOGONAL_DIRECTIONS.X_NEGATIVE:
-            return ORTHOGONAL_DIRECTIONS.Y_POSITIVE;
-        case ORTHOGONAL_DIRECTIONS.Y_POSITIVE:
-            return ORTHOGONAL_DIRECTIONS.X_POSITIVE;
-    }
-    throw new Error('Invalid direction');
-}
 
 function parseInput(input: string): [Matrix<string>, Point2D, ORTHOGONAL_DIRECTIONS] {
     const matrix = stringToStringMatrix(input);
@@ -43,10 +29,10 @@ function simulateWalk(matrix: Matrix<string>, startingPoint: Point2D, startingDi
     const cachedPointsAndDirections = new Set<string>([pointAndDirectionToString(currentPoint, currentDirection)]);
 
     while (true) {
-        const nextPoint = currentPoint.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(currentDirection)!);
+        const nextPoint = currentPoint.getOrthogonalNeighbor(currentDirection);
         if (!matrix.isPointInBounds(nextPoint)) break;
         if (matrix.getValue(nextPoint) === OBSTACLE_SYMBOL) {
-            currentDirection = rotateDirectionRight(currentDirection);
+            currentDirection = rotateDirectionClockwise(currentDirection);
             continue;
         }
 

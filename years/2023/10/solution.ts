@@ -47,7 +47,7 @@ function parseInput(input: string): [Matrix<TILE_TYPE>, Point2D] {
 
     for (const [TILE_TYPE, directions] of [...TILE_DIRECTION_COMPATIBILITY_MAP.entries()]) {
         const matchesDirections = directions.every((direction) => {
-            const neighborPoint = startingPoint.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(direction)!);
+            const neighborPoint = startingPoint.getOrthogonalNeighbor(direction);
             if (!matrix.isPointInBounds(neighborPoint)) return false;
             const neighborValue = matrix.getValue(neighborPoint);
             const possibleNeighborValues = DIRECTION_COMPATIBILITY_MAP.get(direction)!;

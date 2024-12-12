@@ -21,7 +21,7 @@ function shiftRocks(matrix: Matrix<string>, direction: ORTHOGONAL_DIRECTIONS): v
         let rocksShifted = false;
         matrix.forEachPoint((point: Point2D, value: string) => {
             if (value !== TILE_TYPE.ROUND_ROCK) return;
-            const neighbourPoint = point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(direction)!);
+            const neighbourPoint = point.getOrthogonalNeighbor(direction);
             if (!matrix.isPointInBounds(neighbourPoint)) return;
             if (matrix.getValue(neighbourPoint) !== TILE_TYPE.EMPTY) return;
             matrix.setValue(neighbourPoint, TILE_TYPE.ROUND_ROCK);

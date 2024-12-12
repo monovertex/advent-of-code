@@ -4,7 +4,7 @@ import '../../prototype-extensions';
 const isDigit = (char: string) => /\d/.test(char);
 
 const isLeftCharacterDigit = (matrix: Matrix<string>, point: Point2D) => {
-    const leftPoint = point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.X_NEGATIVE)!);
+    const leftPoint = point.getOrthogonalNeighbor(ORTHOGONAL_DIRECTIONS.X_NEGATIVE);
     if (!matrix.isPointInBounds(leftPoint)) return false;
     const leftValue = matrix.getValue(leftPoint);
     return isDigit(leftValue);
@@ -26,7 +26,7 @@ const extractNumbers = (matrix: Matrix<string>) => {
             if (!isDigit(currentValue)) break;
             numberAsString += currentValue;
             numberPoints.push(currentPoint);
-            currentPoint = currentPoint.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.X_POSITIVE)!);
+            currentPoint = currentPoint.getOrthogonalNeighbor((ORTHOGONAL_DIRECTIONS.X_POSITIVE));
         }
 
         accumulator.push([numberPoints, Number(numberAsString)]);

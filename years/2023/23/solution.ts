@@ -109,13 +109,13 @@ export function solvePart1(input: string): number {
     function getNeighbors(point: Point2D, value: string): Point2D[] {
         if (value === TILE_TYPE.PATH) return point.orthogonalNeighbors();
         if (value === TILE_TYPE.SLOPE_RIGHT)
-            return [point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.X_POSITIVE)!)];
+            return [point.getOrthogonalNeighbor(ORTHOGONAL_DIRECTIONS.X_POSITIVE)];
         if (value === TILE_TYPE.SLOPE_LEFT)
-            return [point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.X_NEGATIVE)!)];
+            return [point.getOrthogonalNeighbor(ORTHOGONAL_DIRECTIONS.X_NEGATIVE)];
         if (value === TILE_TYPE.SLOPE_UP)
-            return [point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.Y_POSITIVE)!)];
+            return [point.getOrthogonalNeighbor(ORTHOGONAL_DIRECTIONS.Y_POSITIVE)];
         if (value === TILE_TYPE.SLOPE_DOWN)
-            return [point.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.Y_NEGATIVE)!)];
+            return [point.getOrthogonalNeighbor(ORTHOGONAL_DIRECTIONS.Y_NEGATIVE)];
         throw new Error(`Unexpected tile: ${value}`);
     };
 

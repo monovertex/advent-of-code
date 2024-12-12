@@ -25,6 +25,7 @@ interface Array<T> {
     sortAscendingNumbers(): Array<number>;
     sortDescendingNumbers(): Array<number>;
     isEmpty(): boolean;
+    isNotEmpty(): boolean;
 }
 
 Array.prototype.findLast = function (predicate) {
@@ -155,7 +156,11 @@ Array.prototype.sortDescendingNumbers = function () {
 }
 
 Array.prototype.isEmpty = function () {
-    return this.length === 0;
+    return this.length <= 0;
+}
+
+Array.prototype.isNotEmpty = function () {
+    return !this.isEmpty();
 }
 
 interface String {

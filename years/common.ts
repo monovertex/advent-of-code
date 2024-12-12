@@ -42,7 +42,7 @@ export function walkGraph(
 ): any {
     const queue = [{ node: startNode, distance: 0 }];
 
-    while (queue.length > 0) {
+    while (queue.isNotEmpty()) {
         const { node, distance } = queue.shift()!;
         const walkResult = walkNode(node, distance);
         if (walkResult !== undefined) return walkResult;
@@ -338,6 +338,18 @@ export class Point2D<T extends number | bigint = number> implements IGraphNode {
         this.y = newPoint.y;
     }
 
+    getOrthogonalNeighbor(direction: ORTHOGONAL_DIRECTIONS): Point2D<T> {
+        if (typeof this.x === 'bigint' && typeof this.y === 'bigint') {
+            return this.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP_BIGINT.get(direction) as Point2D<T>);
+        }
+
+        if (typeof this.x === 'number' && typeof this.y === 'number') {
+            return this.add(ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(direction) as Point2D<T>);
+        }
+
+        throw new Error('Unexpected error.');
+    }
+
     orthogonalNeighbors(): Point2D<T>[] {
         if (typeof this.x === 'bigint' && typeof this.y === 'bigint') {
             return ORTHOGONAL_DIRECTION_VECTORS_2D_BIGINT.map((vector) => this.add(vector as Point2D<T>));
@@ -544,6 +556,14 @@ export class Matrix<T> implements IGraph {
 
     [util.inspect.custom]() {
         return this.toString();
+    }
+
+    getColumn(x: number): T[] {
+        return this.data[x];
+    }
+
+    getRow(y: number): T[] {
+        return this.data.map(row => row[y]);
     }
 
     getValue(point: Point2D): T {
@@ -818,4 +838,32 @@ export function shoelaceArea(polygon: Point2D[]) {
         return result + (startPoint.x * endPoint.y) - (endPoint.x * startPoint.y);
     }, 0);
     return Math.abs(area) / 2;
+}
+
+export function rotateDirectionClockwise(direction: ORTHOGONAL_DIRECTIONS) {
+    switch (direction) {
+        case ORTHOGONAL_DIRECTIONS.X_POSITIVE:
+            return ORTHOGONAL_DIRECTIONS.Y_NEGATIVE;
+        case ORTHOGONAL_DIRECTIONS.Y_NEGATIVE:
+            return ORTHOGONAL_DIRECTIONS.X_NEGATIVE;
+        case ORTHOGONAL_DIRECTIONS.X_NEGATIVE:
+            return ORTHOGONAL_DIRECTIONS.Y_POSITIVE;
+        case ORTHOGONAL_DIRECTIONS.Y_POSITIVE:
+            return ORTHOGONAL_DIRECTIONS.X_POSITIVE;
+    }
+    throw new Error('Invalid direction');
+}
+
+export function rotateDirectionCounterClockwise(direction: ORTHOGONAL_DIRECTIONS) {
+    switch (direction) {
+        case ORTHOGONAL_DIRECTIONS.X_POSITIVE:
+            return ORTHOGONAL_DIRECTIONS.Y_POSITIVE;
+        case ORTHOGONAL_DIRECTIONS.Y_POSITIVE:
+            return ORTHOGONAL_DIRECTIONS.X_NEGATIVE;
+        case ORTHOGONAL_DIRECTIONS.X_NEGATIVE:
+            return ORTHOGONAL_DIRECTIONS.Y_NEGATIVE;
+        case ORTHOGONAL_DIRECTIONS.Y_NEGATIVE:
+            return ORTHOGONAL_DIRECTIONS.X_POSITIVE;
+    }
+    throw new Error('Invalid direction');
 }
