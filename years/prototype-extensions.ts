@@ -256,6 +256,7 @@ interface Number {
     isEven(): boolean;
     isNegative(): boolean;
     digitCount(): number;
+    wrap(max: number): number;
 }
 
 Number.prototype.isEven = function () {
@@ -270,10 +271,15 @@ Number.prototype.digitCount = function () {
     return String(this).length;
 }
 
+Number.prototype.wrap = function (max) {
+    return ((this as number) % max + max) % max;
+}
+
 interface BigInt {
     isEven(): boolean;
     isNegative(): boolean;
     digitCount(): number;
+    wrap(max: bigint): bigint;
 }
 
 BigInt.prototype.isEven = function () {
@@ -286,6 +292,10 @@ BigInt.prototype.isNegative = function () {
 
 BigInt.prototype.digitCount = function () {
     return String(this).length;
+}
+
+BigInt.prototype.wrap = function (max) {
+    return ((this as bigint) % max + max) % max;
 }
 
 interface Math {

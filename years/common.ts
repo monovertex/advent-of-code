@@ -867,3 +867,11 @@ export function rotateDirectionCounterClockwise(direction: ORTHOGONAL_DIRECTIONS
     }
     throw new Error('Invalid direction');
 }
+
+export function wait(duration: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, duration));
+}
+
+export function clearOutput() {
+    process.stdout.write('\x1Bc');
+}
