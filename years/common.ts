@@ -15,6 +15,13 @@ export enum ORTHOGONAL_DIRECTIONS {
     Z_NEGATIVE = 'z-neg',
 }
 
+export const ORTHOGONAL_DIRECTIONS_2D_LIST: ORTHOGONAL_DIRECTIONS[] = [
+    ORTHOGONAL_DIRECTIONS.X_POSITIVE,
+    ORTHOGONAL_DIRECTIONS.X_NEGATIVE,
+    ORTHOGONAL_DIRECTIONS.Y_POSITIVE,
+    ORTHOGONAL_DIRECTIONS.Y_NEGATIVE,
+];
+
 export enum DIAGONAL_DIRECTIONS {
     X_POSITIVE_Y_POSITIVE = 'x-pos-y-pos',
     X_POSITIVE_Y_NEGATIVE = 'x-pos-y-neg',
@@ -85,14 +92,14 @@ export function aStar(
 
     while (queue.length > 0) {
         const currentNode = queue.dequeue()!;
-        const currentNodeKey = currentNode.getUniqueKey();
-        if (matcher(currentNode)) return costSoFar.get(currentNodeKey)!;
+        const currentNodeCost = costSoFar.get(currentNode.getUniqueKey())!
+        if (matcher(currentNode)) return currentNodeCost;
 
         for (const neighborNode of getNeighbors(currentNode)) {
             if (isNeighborValid && !isNeighborValid(currentNode, neighborNode)) continue;
             const neighborNodeKey = neighborNode.getUniqueKey();
 
-            const newCost = costSoFar.get(currentNodeKey)! + calculateCost(currentNode, neighborNode);
+            const newCost = currentNodeCost + calculateCost(currentNode, neighborNode);
             const previousCost = costSoFar.get(neighborNodeKey);
             if (previousCost !== undefined && newCost >= previousCost) continue;
 
@@ -274,8 +281,16 @@ export class Point2D<T extends number | bigint = number> implements IGraphNode {
         return this.toString();
     }
 
-    toString(): string {
+    coordsToString(): string {
         return `(${this.x},${this.y})`;
+    }
+
+    toString(): string {
+        return this.coordsToString();
+    }
+
+    [util.inspect.custom]() {
+        return this.toString();
     }
 
     add(point: Point2D<T>): Point2D<T> {
