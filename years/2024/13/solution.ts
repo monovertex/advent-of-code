@@ -3,7 +3,7 @@ import '../../prototype-extensions';
 
 type Equation = [Point2D<bigint>, Point2D<bigint>, Point2D<bigint>];
 
-function parseInput(input: string, multiplier: bigint): Equation[] {
+function parseInput(input: string, offset: bigint): Equation[] {
     return input.splitByDoubleNewLine().map((group) => group.splitByNewLine()).map(([buttonAInput, buttonBInput, destinationInput]) => {
         const [, xA, yA] = buttonAInput.match(/^Button A: X\+(\d+), Y\+(\d+)$/)!;
         const [, xB, yB] = buttonBInput.match(/^Button B: X\+(\d+), Y\+(\d+)$/)!;
@@ -11,7 +11,7 @@ function parseInput(input: string, multiplier: bigint): Equation[] {
         return [
             new Point2D(BigInt(xA), BigInt(yA)),
             new Point2D(BigInt(xB), BigInt(yB)),
-            new Point2D(BigInt(xDest) + multiplier, BigInt(yDest) + multiplier)
+            new Point2D(BigInt(xDest) + offset, BigInt(yDest) + offset)
         ];
     });
 }
@@ -32,8 +32,8 @@ function solveEquation(equation: Equation): [number, number] | null {
     return [a, b];
 }
 
-function solve(input: string, multiplier: bigint): bigint {
-    return (parseInput(input, multiplier)
+function solve(input: string, offset: bigint): bigint {
+    return (parseInput(input, offset)
         .map((equation) => solveEquation(equation))
         .filter((solution) => solution !== null) as [number, number][])
         .map(([a, b]) => BigInt(a) * 3n + BigInt(b))
@@ -41,7 +41,7 @@ function solve(input: string, multiplier: bigint): bigint {
 }
 
 export function solvePart1(input: string): bigint {
-    return solve(input, 1n);
+    return solve(input, 0n);
 }
 
 export function solvePart2(input: string): bigint {

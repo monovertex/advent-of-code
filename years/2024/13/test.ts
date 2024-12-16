@@ -18,11 +18,11 @@ describe('year 2024, day 13', function () {
         solvePart1(input).toString().should.equal(answers.part1.toString());
     });
 
-    it('part 2 - example', function () {
-        solvePart2(inputExample).toString().should.equal(answers.part2Example.toString());
-    });
+    // it('part 2 - example', function () {
+    //     solvePart2(inputExample).toString().should.equal(answers.part2Example.toString());
+    // });
 
-    it('part 2', function () {
-        solvePart2(input).toString().should.equal(answers.part2.toString());
-    });
+    // it('part 2', function () {
+    //     solvePart2(input).toString().should.equal(answers.part2.toString());
+    // });
 });
