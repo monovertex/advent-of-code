@@ -8,6 +8,7 @@ interface Array<T> {
     multiply(): number;
     max(): number;
     min(): number;
+    minAndMax(): [number, number];
     toNumbers(): Array<number>;
     toBigInts(): Array<bigint>;
     toStrings(): Array<string>;
@@ -69,6 +70,10 @@ Array.prototype.max = function () {
 
 Array.prototype.min = function () {
     return Math.min(...this);
+}
+
+Array.prototype.minAndMax = function () {
+    return [this.min(), this.max()];
 }
 
 Array.prototype.toNumbers = function () {

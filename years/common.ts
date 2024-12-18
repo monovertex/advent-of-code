@@ -29,6 +29,8 @@ export enum DIAGONAL_DIRECTIONS {
     X_NEGATIVE_Y_NEGATIVE = 'x-neg-y-neg',
 }
 
+export const DIAGONAL_DIRECTIONS_2D_LIST: DIAGONAL_DIRECTIONS[] = Object.values(DIAGONAL_DIRECTIONS);
+
 export interface IGraphNode {
     getUniqueKey(): any;
     toString(): string;
@@ -279,6 +281,11 @@ export class Point2D<T extends number | bigint = number> implements IGraphNode {
         this.y = y;
     }
 
+    static fromCoordsString(coordsString: string): Point2D {
+        const [x, y] = coordsString.slice(1, -1).splitByComma().toNumbers();
+        return new Point2D(x, y);
+    }
+
     getUniqueKey() {
         return this.toString();
     }
@@ -353,6 +360,24 @@ export class Point2D<T extends number | bigint = number> implements IGraphNode {
         const newPoint = this.add(vector);
         this.x = newPoint.x;
         this.y = newPoint.y;
+    }
+
+    getNeighbor(direction: ORTHOGONAL_DIRECTIONS | DIAGONAL_DIRECTIONS): Point2D<T> {
+        if (Object.values(ORTHOGONAL_DIRECTIONS).includes(direction as ORTHOGONAL_DIRECTIONS))
+            return this.getOrthogonalNeighbor(direction as ORTHOGONAL_DIRECTIONS);
+        return this.getDiagonalNeighbor(direction as DIAGONAL_DIRECTIONS);
+    }
+
+    getDiagonalNeighbor(direction: DIAGONAL_DIRECTIONS): Point2D<T> {
+        if (typeof this.x === 'bigint' && typeof this.y === 'bigint') {
+            return this.add(DIAGONAL_DIRECTION_VECTORS_2D_MAP_BIGINT.get(direction) as Point2D<T>);
+        }
+
+        if (typeof this.x === 'number' && typeof this.y === 'number') {
+            return this.add(DIAGONAL_DIRECTION_VECTORS_2D_MAP.get(direction) as Point2D<T>);
+        }
+
+        throw new Error('Unexpected error.');
     }
 
     getOrthogonalNeighbor(direction: ORTHOGONAL_DIRECTIONS): Point2D<T> {
