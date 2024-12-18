@@ -76,7 +76,9 @@ export function breadthFirstSearch(
         neighbors.forEach((neighbor) => visited.add(neighbor.getUniqueKey()));
         return neighbors;
     }
-    return walkGraph(startNode, walkNode, walkGetNeighbors) as [IGraphNode, number] | null;
+    const result = walkGraph(startNode, walkNode, walkGetNeighbors);
+    if (result === undefined) return null;
+    return result as [IGraphNode, number];
 }
 
 export function aStar(
@@ -553,6 +555,11 @@ export class Matrix<T> implements IGraph {
         this.data = data;
     }
 
+    static initializeMatrix<T>(width: number, height: number, defaultValue: T): Matrix<T> {
+        const data = Array(width).fill(null).map(() => Array(height).fill(defaultValue));
+        return new Matrix<T>(data);
+    }
+
     get width() {
         return this.data.length;
     }
@@ -669,16 +676,6 @@ export class Matrix<T> implements IGraph {
         ) as [Point2D, number] | null;
     }
 
-    shortestDistance(
-        startPoint: Point2D, endPoint: Point2D,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
-    ): number | null {
-        const result = this.breadthFirstSearch(startPoint, (point) => point.equals(endPoint), isNeighborValid, getNeighbors);
-        if (!result) return null;
-        return result[1];
-    }
-
     aStar(
         startPoint: Point2D,
         endPoint: Point2D,
@@ -705,6 +702,21 @@ export class Matrix<T> implements IGraph {
             resolvedCalculateHeuristic as (node: IGraphNode, neighbor: IGraphNode) => number,
             resolvedGetNeighbors as (node: IGraphNode) => IGraphNode[],
         ) as number | null;
+    }
+
+    shortestDistance(
+        startPoint: Point2D, endPoint: Point2D,
+        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
+        getNeighbors?: (point: Point2D, value: T) => Point2D[]
+    ): number | null {
+        return this.aStar(
+            startPoint,
+            endPoint,
+            (_point, _neighbor) => 1,
+            undefined,
+            isNeighborValid,
+            getNeighbors,
+        );
     }
 
     #resolveWalkGetNeighbors(

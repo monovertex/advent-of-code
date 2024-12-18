@@ -257,6 +257,7 @@ interface Number {
     isNegative(): boolean;
     digitCount(): number;
     wrap(max: number): number;
+    isWithinBounds(min: number, max: number): boolean;
 }
 
 Number.prototype.isEven = function () {
@@ -273,6 +274,10 @@ Number.prototype.digitCount = function () {
 
 Number.prototype.wrap = function (max) {
     return ((this as number) % max + max) % max;
+}
+
+Number.prototype.isWithinBounds = function (min, max) {
+    return (this as number) >= min && (this as number) <= max;
 }
 
 interface BigInt {
