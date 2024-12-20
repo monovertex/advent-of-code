@@ -47,7 +47,7 @@ export interface IGraph {
 export function walkGraph(
     startNode: IGraphNode,
     walkNode: (node: IGraphNode, distance: number) => any,
-    getNeighbors: (node: IGraphNode) => IGraphNode[],
+    getNeighbors: (node: IGraphNode, distance: number) => IGraphNode[],
 ): any {
     const queue = [{ node: startNode, distance: 0 }];
 
@@ -55,7 +55,7 @@ export function walkGraph(
         const { node, distance } = queue.shift()!;
         const walkResult = walkNode(node, distance);
         if (walkResult !== undefined) return walkResult;
-        getNeighbors(node).forEach((neighbor) =>
+        getNeighbors(node, distance).forEach((neighbor) =>
             queue.push({ node: neighbor, distance: distance + 1 }));
     }
 
@@ -65,15 +65,15 @@ export function walkGraph(
 export function breadthFirstSearch(
     startNode: IGraphNode,
     matcher: (node: IGraphNode, distance: number) => boolean,
-    getNeighbors: (node: IGraphNode) => IGraphNode[],
-    isNeighborValid?: (node: IGraphNode, neighbor: IGraphNode) => boolean,
+    getNeighbors: (node: IGraphNode, distance: number) => IGraphNode[],
+    isNeighborValid?: (node: IGraphNode, neighbor: IGraphNode, distance: number) => boolean,
 ): [IGraphNode, number] | null {
     const visited = new Set([startNode.getUniqueKey()]);
     const walkNode = (node: IGraphNode, distance: number) => matcher(node, distance) ? [node, distance] : undefined;
-    const walkGetNeighbors = (node: IGraphNode) => {
-        const neighbors = getNeighbors(node).filter((neighbor) => {
+    const walkGetNeighbors = (node: IGraphNode, distance: number) => {
+        const neighbors = getNeighbors(node, distance).filter((neighbor) => {
             if (visited.has(neighbor.getUniqueKey())) return false;
-            return !isNeighborValid || isNeighborValid(node, neighbor);
+            return !isNeighborValid || isNeighborValid(node, neighbor, distance);
         });
         neighbors.forEach((neighbor) => visited.add(neighbor.getUniqueKey()));
         return neighbors;
@@ -671,15 +671,19 @@ export class Matrix<T> implements IGraph {
         }, [] as Point2D[]);
     }
 
+    getPointOrthogonalNeighbors(point: Point2D): Point2D[] {
+        return point.orthogonalNeighbors().filter(this.isPointInBounds.bind(this));
+    }
+
     sum(): number {
         return this.reducePoints((sum, _, value) => sum + Number(value), 0);
     }
 
     walk(
         startPoint: Point2D,
-        walkPoint: (node: Point2D, value: T, distance: number) => any,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
+        walkPoint: (point: Point2D, value: T, distance: number) => any,
+        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T, distance: number) => boolean,
+        getNeighbors?: (point: Point2D, value: T, distance: number) => Point2D[]
     ): any {
         const walkNode = (node: IGraphNode, distance: number) => walkPoint(node as Point2D, this.getValue(node as Point2D), distance);
 
@@ -689,8 +693,8 @@ export class Matrix<T> implements IGraph {
     breadthFirstSearch(
         startPoint: Point2D,
         matcher: (point: Point2D, value: T, distance: number) => boolean,
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
+        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T, distance: number) => boolean,
+        getNeighbors?: (point: Point2D, value: T, distance: number) => Point2D[]
     ): [Point2D, number] | null {
         const resolvedMatcher: (node: IGraphNode, distance: number) => boolean = (point, distance) => matcher(point as Point2D, this.getValue(point as Point2D), distance);
 
@@ -745,15 +749,15 @@ export class Matrix<T> implements IGraph {
     }
 
     #resolveWalkGetNeighbors(
-        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T) => boolean,
-        getNeighbors?: (point: Point2D, value: T) => Point2D[]
-    ): (node: IGraphNode) => IGraphNode[] {
-        return (node: IGraphNode) => {
+        isNeighborValid?: (point: Point2D, value: T, neighborPoint: Point2D, neighborValue: T, distance: number) => boolean,
+        getNeighbors?: (point: Point2D, value: T, distance: number) => Point2D[]
+    ): (node: IGraphNode, distance: number) => IGraphNode[] {
+        return (node: IGraphNode, distance: number) => {
             const point = node as Point2D;
             const value = this.getValue(point);
-            const neighbors = getNeighbors ? getNeighbors(point, value) : point.orthogonalNeighbors();
+            const neighbors = getNeighbors ? getNeighbors(point, value, distance) : point.orthogonalNeighbors();
             return neighbors.filter((neighbor) => this.isPointInBounds(neighbor) &&
-                (!isNeighborValid || isNeighborValid(point, value, neighbor, this.getValue(neighbor)))
+                (!isNeighborValid || isNeighborValid(point, value, neighbor, this.getValue(neighbor), distance))
             ) as IGraphNode[];
         };
     }

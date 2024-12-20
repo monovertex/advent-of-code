@@ -45,10 +45,10 @@ function parseInput<PointT extends PathPoint>(
     pointConstructor: { new (...args : any[]): PointT }
 ): [Matrix<string>, PointT, Point2D] {
     const map = stringToStringMatrix(input);
-    const endPoint = map.findPoint((_point, value) => value === MAP_SYMBOLS.END)!;
+    const endPoint = map.findPointOfValue(MAP_SYMBOLS.END)!;
 
     const startPoint = new pointConstructor(
-        map.findPoint((_point, value) => value === MAP_SYMBOLS.START)!,
+        map.findPointOfValue(MAP_SYMBOLS.START)!,
         ORTHOGONAL_DIRECTIONS.X_POSITIVE
     );
 

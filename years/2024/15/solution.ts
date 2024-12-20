@@ -37,7 +37,7 @@ function solve(input: string, parseMapSymbol: (input: MAP_SYMBOL) => MAP_SYMBOL[
 
     const map = stringToStringMatrix(transformedMapInput);
     const moves = movesInput.splitByNewLine().join('').toArray();
-    let currentPoint = map.findPoint((_point, value) => value === MAP_SYMBOL.START)!;
+    let currentPoint = map.findPointOfValue(MAP_SYMBOL.START)!;
     map.setValue(currentPoint, MAP_SYMBOL.EMPTY);
 
     for (const move of moves) {

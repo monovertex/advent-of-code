@@ -1,7 +1,7 @@
 interface Array<T> {
     findLast(predicate: Function): T;
     findLastIndex(predicate: Function): number;
-    reject(predicate: Function): Array<T>;
+    reject(predicate: (item: T) => boolean): Array<T>;
     without(...items: Array<T>): Array<T>;
     countBy(predicate: (item: T, index: number) => boolean): number;
     sum(): T;
@@ -133,6 +133,7 @@ Array.prototype.groupBy = function (predicate) {
         const key = predicate(item);
         if (!accumulator.has(key)) accumulator.set(key, []);
         accumulator.get(key)!.push(item);
+        return accumulator;
     }, new Map());
 }
 
