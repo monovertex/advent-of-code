@@ -1,147 +1,74 @@
-import { Matrix, memoize, Point2D, stringToStringMatrix } from '../../common';
+import { findIndexOfPoint, Matrix, memoize, Point2D, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
-enum MAP_SYMBOLS {
-    EMPTY = ',',
-    WALL = '#',
-    START = 'S',
-    END = 'E',
+enum MAP_SYMBOLS { EMPTY = ',', WALL = '#', START = 'S', END = 'E' };
+
+function solve(input: string, maxCheatDistance: number, exampleSavedThreshold: number): number {
+    const map = stringToStringMatrix(input);
+    const path = getPath(map);
+    // The example has max distance of 84, but for the real input we need to find solutions that can
+    // save us at least 100 steps.
+    return countCheats(map, path, maxCheatDistance, path.length < 100 ? exampleSavedThreshold : 100);
 }
 
-const DEBUG = false;
+function getPath(map: Matrix<string>): Point2D[] {
+    const startPoint = map.findPointOfValue(MAP_SYMBOLS.START)!;
+    const endPoint = map.findPointOfValue(MAP_SYMBOLS.END)!;
+    const path: Point2D[] = [startPoint];
+    let currentPoint = startPoint;
 
-type ShortestDistanceGetter = (map: Matrix<string>, startPoint: Point2D, endPoint: Point2D) => number;
-
-function getShortestDistance(map: Matrix<string>, startPoint: Point2D, endPoint: Point2D) {
-    const isNeighborValid = (_point: Point2D, _value: string, _neighborPoint: Point2D, neighborValue: string) =>
-        neighborValue !== MAP_SYMBOLS.WALL;
-    return map.shortestDistance(startPoint, endPoint, isNeighborValid);
-}
-
-function getPotentialPathPoints(
-    map: Matrix<string>,
-    startPoint: Point2D,
-    endPoint: Point2D,
-    maxDistance: number
-): [Point2D, number][] {
-    const potentialPathPoints: [Point2D, number][] = [];
-    map.breadthFirstSearch(
-        startPoint,
-        (point, value, distance) => {
-            potentialPathPoints.push([point, distance]);
-            return false;
-        },
-        (point: Point2D, value: string, neighborPoint: Point2D, neighborValue: string, distance: number) => {
-            if (neighborValue === MAP_SYMBOLS.WALL) return false;
-            // There's no point in evaluating neighbors if we're never going to reach the end in time.
-            return distance + point.getManhattanDistanceTo(endPoint) < maxDistance;
-        }
-    );
-    return potentialPathPoints;
-}
-
-function getPotentialCheatPoints(
-    pathPoints: [Point2D, number][],
-    map: Matrix<string>,
-    endPoint: Point2D,
-    maxCheatDistance: number,
-    maxDistance: number
-): [Point2D, number][] {
-    const potentialCheatPoints: [Point2D, Point2D, number, number][] = pathPoints.flatMap(([pathPoint, pathDistance]) => {
-        const cheatPoints: [Point2D, number][] = [];
-        map.breadthFirstSearch(
-            pathPoint,
-            (point: Point2D, value: string, cheatDistance: number) => {
-                // Cheats have to go through at least one wall.
-                if (value !== MAP_SYMBOLS.WALL && cheatDistance > 1)
-                    cheatPoints.push([point, cheatDistance])
-                return false;
-            },
-            (point: Point2D, value: string, neighborPoint: Point2D, neighborValue: string, cheatDistance: number) => {
-                // Skip neighbors if we reached the max cheat distance.
-                if (cheatDistance >= maxCheatDistance) return false;
-                // Skip neighbors if we can't reach the end in time.
-                if (pathDistance + cheatDistance + point.getManhattanDistanceTo(endPoint) >= maxDistance) return false;
-                return true;
-            }
-        );
-        // if (DEBUG) console.log('Cheat points for', pathPoint, cheatPoints);
-        return cheatPoints.map(([cheatPoint, cheatDistance]) => [pathPoint, cheatPoint, pathDistance, cheatDistance]) as [Point2D, Point2D, number, number][];
-    });
-
-    return potentialCheatPoints
-        .uniqueBy(([point, cheatPoint, pathDistance, _cheatDistance]) =>
-            `${point.getUniqueKey()}-${cheatPoint.getUniqueKey()}-${pathDistance}`)
-        .map(([_point, cheatPoint, pathDistance, cheatDistance]) => {
-            // console.log(_point, cheatPoint, cheatDistance);
-            return [cheatPoint, pathDistance + cheatDistance];
+    while (!currentPoint.equals(endPoint)) {
+        const nextPoint = currentPoint.orthogonalNeighbors().find((neighborPoint) => {
+            if (!map.isPointInBounds(neighborPoint)) return false;
+            if (path.length > 1 && path[path.length - 2].equals(neighborPoint)) return false;
+            return map.getValue(neighborPoint) !== MAP_SYMBOLS.WALL;
         });
+        if (!nextPoint) throw new Error('No path found');
+        path.push(nextPoint);
+        currentPoint = nextPoint;
+    }
+
+    return path;
 }
 
-function countCheats(
-    map: Matrix<string>,
-    startPoint: Point2D,
-    endPoint: Point2D,
-    maxCheatDistance: number,
-    maxDistance: number
-) {
-    const getShortestDistanceMemoized = memoize(
-        getShortestDistance,
-        (_map: Matrix<string>, startPoint: Point2D, _endPoint: Point2D) => startPoint.getUniqueKey(),
-    ) as ShortestDistanceGetter;
-
-    const potentialPathPoints = getPotentialPathPoints(map, startPoint, endPoint, maxDistance);
-    if (DEBUG) console.log('Potential path points', potentialPathPoints);
-
-    const potentialCheatPoints = getPotentialCheatPoints(potentialPathPoints, map, endPoint, maxCheatDistance, maxDistance);
-    if (DEBUG) console.log('Potential cheat points', potentialCheatPoints);
-
-    if (DEBUG) console.log(potentialCheatPoints
-        .map(([cheatPoint, distance]) => {
-            if (cheatPoint.equals(endPoint)) return distance;
-            // Skip points that are too far away in the best scenario.
-            if (distance + cheatPoint.getManhattanDistanceTo(endPoint) >= maxDistance) return null;
-            const shortestTime = getShortestDistanceMemoized(map, cheatPoint, endPoint);
-            if (shortestTime !== null && distance + shortestTime >= maxDistance) return null;
-            return distance + shortestTime;
-        })
-        .filter(Boolean)
-        .groupBy((distance) => distance)
-        .entriesArray()
-        .map(([distance, distances]) => [84 - distance, distances.length])
-        .sort(([a], [b]) => a - b)
+function countCheats(map: Matrix<string>, path: Point2D[], maxCheatDistance: number, minimumDistanceSaved: number) {
+    const endPoint = path.last();
+    const getPointIndex = memoize(
+        (point: Point2D) => findIndexOfPoint(path, point),
+        (point: Point2D) => point.getUniqueKey()
     );
 
-    return potentialCheatPoints.filter(([cheatPoint, distance]) => {
-        if (cheatPoint.equals(endPoint)) return true;
-        // Skip points that are too far away in the best scenario.
-        if (distance + cheatPoint.getManhattanDistanceTo(endPoint) >= maxDistance) return false;
-        const shortestTime = getShortestDistanceMemoized(map, cheatPoint, endPoint);
-        return shortestTime !== null && distance + shortestTime < maxDistance;
+    return path .flatMap((point, index) => {
+        if (point.equals(endPoint)) return [];
+        return generatePotentialCheatPoints(point, maxCheatDistance)
+            .filter(([, cheatPoint]) => {
+                if (!map.isPointInBounds(cheatPoint) ||
+                    map.getValue(cheatPoint) === MAP_SYMBOLS.WALL) return false;
+                const cheatPointIndex = getPointIndex(cheatPoint);
+                const result = cheatPointIndex >= 0 &&
+                    cheatPointIndex > index &&
+                    cheatPointIndex - index - point.getManhattanDistanceTo(cheatPoint) >= minimumDistanceSaved;
+                return result;
+            });
     }).length;
 }
 
-function solve(input: string, maxCheatDistance: number, exampleSavedThreshold: number = 0) {
-    const map = stringToStringMatrix(input);
-    const startPoint = map.findPointOfValue(MAP_SYMBOLS.START)!;
-    const endPoint = map.findPointOfValue(MAP_SYMBOLS.END)!;
-    const maxDistance = getShortestDistance(map, startPoint, endPoint)!;
-    if (DEBUG) console.log('Max distance', maxDistance);
-
-    // The example has max distance of 84, but for the real input we need to find solutions that can save
-    // us at least 100 steps.
-    const resolvedMaxDistance = maxDistance < 100
-        // Example input case
-        ? maxDistance - exampleSavedThreshold
-        // Real input case.
-        : maxDistance - 99;
-    return countCheats(map, startPoint, endPoint, maxCheatDistance, resolvedMaxDistance);
+function generatePotentialCheatPoints(point: Point2D, maxCheatDistance: number): [Point2D, Point2D][] {
+    const cheatPoints: [Point2D, Point2D][] = [];
+    for (let dX = -maxCheatDistance; dX <= maxCheatDistance; dX++) {
+        const maxDY = maxCheatDistance - Math.abs(dX);
+        for (let dY = -maxDY; dY <= maxDY; dY++) {
+            if (dX === 0 && dY === 0) continue;
+            cheatPoints.push([point, point.add(new Point2D(dX, dY))]);
+        }
+    }
+    return cheatPoints;
 }
 
 export function solvePart1(input: string): number {
-    return solve(input, 2);
+    return solve(input, 2, 1);
 }
 
 export function solvePart2(input: string): number {
-    return solve(input, 20, 49);
+    return solve(input, 20, 50);
 }
