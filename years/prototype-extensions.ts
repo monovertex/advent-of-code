@@ -232,6 +232,7 @@ interface Map<K, V> {
     valuesArray(): V[];
     keysArray(): K[];
     entriesArray(): [K, V][];
+    mapValues<V2>(predicate: (key: K, value: V) => V2): Map<K, V2>;
 }
 
 Map.prototype.filter = function (predicate) {
@@ -248,6 +249,10 @@ Map.prototype.keysArray = function () {
 
 Map.prototype.entriesArray = function () {
     return [...this.entries()];
+}
+
+Map.prototype.mapValues = function (predicate) {
+    return new Map([...this.entries()].map(([key, value]) => [key, predicate(key, value)]));
 }
 
 interface Set<T> {
