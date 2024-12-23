@@ -37,11 +37,12 @@ export interface IGraphNode {
 }
 
 export interface IGraph {
-    walk: Function,
-    breadthFirstSearch: Function,
-    shortestDistance: Function,
-    aStar: Function,
-    [util.inspect.custom]: () => string,
+    forEachNode: (callback: (node: IGraphNode) => void) => void;
+    walk: Function;
+    breadthFirstSearch: Function;
+    shortestDistance: Function;
+    aStar: Function;
+    [util.inspect.custom]: () => string;
 }
 
 export function walkGraph(
@@ -168,6 +169,10 @@ export class Graph<NodeType extends IGraphNode = GraphNode> implements IGraph {
         this.edges.get(nodeB)!.add(nodeA);
     }
 
+    hasEdge(nodeA: NodeType, nodeB: NodeType): boolean {
+        return this.edges.get(nodeA)?.has(nodeB) ?? false;
+    }
+
     removeEdge(nodeA: NodeType, nodeB: NodeType) {
         this.edges.get(nodeA)?.delete(nodeB);
         this.edges.get(nodeB)?.delete(nodeA);
@@ -175,6 +180,10 @@ export class Graph<NodeType extends IGraphNode = GraphNode> implements IGraph {
 
     getNodeNeighbors(node: NodeType): NodeType[] {
         return this.edges.get(node)?.valuesArray() ?? [];
+    }
+
+    forEachNode(callback: (node: NodeType) => void): void {
+        this.nodes.valuesArray().forEach(callback);
     }
 
     toString(): string {
@@ -625,7 +634,7 @@ export class Matrix<T> implements IGraph {
         return point.x >= 0 && point.x < this.width && point.y >= 0 && point.y < this.height;
     }
 
-    forEachPoint(callback: (point: Point2D, value: T) => void) {
+    forEachNode(callback: (point: Point2D, value: T) => void) {
         this.data.forEach((column, x) => {
             column.forEach((value, y) => {
                 callback(new Point2D(x, y), value);

@@ -175,6 +175,7 @@ interface String {
     splitByComma(): string[];
     splitByPipe(): string[];
     splitByColon(): string[];
+    splitByDash(): string[];
     splitByWhitespace(): string[];
     toArray(): string[];
     toNumbers(): number[];
@@ -201,6 +202,10 @@ String.prototype.splitByPipe = function () {
 
 String.prototype.splitByColon = function () {
     return this.split(/: ?/);
+}
+
+String.prototype.splitByDash = function () {
+    return this.split(/- ?/);
 }
 
 String.prototype.splitByWhitespace = function () {

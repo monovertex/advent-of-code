@@ -19,7 +19,7 @@ const PART_2_CYCLE_COUNT = 1_000_000_000;
 function shiftRocks(matrix: Matrix<string>, direction: ORTHOGONAL_DIRECTIONS): void {
     while (true) {
         let rocksShifted = false;
-        matrix.forEachPoint((point: Point2D, value: string) => {
+        matrix.forEachNode((point: Point2D, value: string) => {
             if (value !== TILE_TYPE.ROUND_ROCK) return;
             const neighbourPoint = point.getOrthogonalNeighbor(direction);
             if (!matrix.isPointInBounds(neighbourPoint)) return;

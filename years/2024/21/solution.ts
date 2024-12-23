@@ -53,11 +53,11 @@ function getShortestPaths(keypad: Matrix<string>, startPoint: Point2D, endPoint:
 function computeKeypadPaths(keypad: Matrix<string>): PathsMap {
     const paths: PathsMap = new Map();
 
-    keypad.forEachPoint((startPoint, startValue) => {
+    keypad.forEachNode((startPoint, startValue) => {
         if (startValue === ' ') return;
         const shortestPathsTo = new Map<string, string[][]>();
 
-        keypad.forEachPoint((endPoint, endValue) => {
+        keypad.forEachNode((endPoint, endValue) => {
             if (endValue === ' ') return;
             shortestPathsTo.set(endValue, getShortestPaths(keypad, startPoint, endPoint));
         });
