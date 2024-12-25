@@ -16,27 +16,6 @@ function parseInput(input: string): Graph<GraphNode> {
     return graph;
 }
 
-export function solvePart1(input: string): number {
-    const graph = parseInput(input);
-    const cliques: Clique[] = [];
-    const cliqueKeys = new Set<string>();
-    graph.forEachNode((nodeA) => {
-        graph.forEachNode((nodeB) => {
-            graph.forEachNode((nodeC) => {
-                if (!graph.hasEdge(nodeA, nodeB) ||
-                    !graph.hasEdge(nodeB, nodeC) ||
-                    !graph.hasEdge(nodeC, nodeA)) return;
-                const cliqueKey = getCliqueKey([nodeA, nodeB, nodeC]);
-                if (cliqueKeys.has(cliqueKey)) return;
-                cliques.push([nodeA, nodeB, nodeC]);
-                cliqueKeys.add(cliqueKey);
-            });
-        });
-    });
-
-    return cliques.filter((nodes) => nodes.some((node) => node.identifier.startsWith('t'))).length;
-}
-
 function isCliqueValid(graph: Graph, clique: Clique): boolean {
     for (let i = 0; i < clique.length; i++) {
         for (let j = i + 1; j < clique.length; j++) {
@@ -44,6 +23,34 @@ function isCliqueValid(graph: Graph, clique: Clique): boolean {
         }
     }
     return true;
+}
+
+export function solvePart1(input: string): number {
+    const graph = parseInput(input);
+    const nodes = graph.nodeList;
+    const cliques: Clique[] = [];
+    const cliqueKeys = new Set<string>();
+
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            for (let k = j + 1; k < nodes.length; k++) {
+                const nodeA = nodes[i];
+                const nodeB = nodes[j];
+                const nodeC = nodes[k];
+
+                const clique = [nodeA, nodeB, nodeC];
+                if (!isCliqueValid(graph, clique)) continue;
+
+                const cliqueKey = getCliqueKey(clique);
+                if (cliqueKeys.has(cliqueKey)) continue;
+
+                cliques.push(clique);
+                cliqueKeys.add(cliqueKey);
+            }
+        }
+    }
+
+    return cliques.filter((nodes) => nodes.some((node) => node.identifier.startsWith('t'))).length;
 }
 
 function findMaxClique(graph: Graph): Clique {
