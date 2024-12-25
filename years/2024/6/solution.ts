@@ -1,4 +1,4 @@
-import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix, rotateDirectionClockwise } from '../../common';
+import { Matrix, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 const GUARD_ORIENTATION_SYMBOL_TO_DIRECTION = new Map([
@@ -20,13 +20,15 @@ function pointAndDirectionToString(point: Point2D, direction: ORTHOGONAL_DIRECTI
     return `${point.toString()}-${direction}`;
 }
 
-function simulateWalk(matrix: Matrix<string>, startingPoint: Point2D, startingDirection: ORTHOGONAL_DIRECTIONS): [Point2D[], boolean] {
+function detectLoop(
+    matrix: Matrix<string>,
+    startingPoint: Point2D,
+    startingDirection: ORTHOGONAL_DIRECTIONS,
+    previousVisitedPointsAndDirections: Set<string>,
+): boolean {
     let currentPoint = startingPoint;
     let currentDirection = startingDirection;
-    let isLooping = false;
-    const visitedPoints: Point2D[] = [currentPoint];
-    const cachedVisitedPoints = new Set<string>([currentPoint.toString()]);
-    const cachedPointsAndDirections = new Set<string>([pointAndDirectionToString(currentPoint, currentDirection)]);
+    const visitedPointsAndDirections = new Set<string>(previousVisitedPointsAndDirections);
 
     while (true) {
         const nextPoint = currentPoint.getOrthogonalNeighbor(currentDirection);
@@ -36,37 +38,58 @@ function simulateWalk(matrix: Matrix<string>, startingPoint: Point2D, startingDi
             continue;
         }
 
-        const nextPointAndDirectionAsString = pointAndDirectionToString(nextPoint, currentDirection)
-        if (cachedPointsAndDirections.has(nextPointAndDirectionAsString)) {
-            isLooping = true;
-            break;
-        }
-        cachedPointsAndDirections.add(nextPointAndDirectionAsString);
-
-        const nextPointAsString = nextPoint.toString();
-        if (!cachedVisitedPoints.has(nextPointAsString)) visitedPoints.push(nextPoint);
-        cachedVisitedPoints.add(nextPointAsString);
+        const nextPointAndDirectionAsString = pointAndDirectionToString(nextPoint, currentDirection);
+        if (visitedPointsAndDirections.has(nextPointAndDirectionAsString)) return true;
+        visitedPointsAndDirections.add(nextPointAndDirectionAsString);
         currentPoint = nextPoint;
     }
 
-    return [visitedPoints, isLooping];
+    return false;
+}
+
+function simulateWalk(matrix: Matrix<string>, startingPoint: Point2D, startingDirection: ORTHOGONAL_DIRECTIONS, testLoops: boolean = false): [number, number] {
+    let currentPoint = startingPoint;
+    let currentDirection = startingDirection;
+    const visitedPointsAndDirections = new Set<string>([pointAndDirectionToString(currentPoint, currentDirection)]);
+    const visitedPoints = new Set<string>([currentPoint.getUniqueKey()]);
+    const loopingPoints = new Set<string>();
+
+    while (true) {
+        const nextPoint = currentPoint.getOrthogonalNeighbor(currentDirection);
+
+        if (!matrix.isPointInBounds(nextPoint)) break;
+        if (matrix.getValue(nextPoint) === OBSTACLE_SYMBOL) {
+            currentDirection = rotateDirectionClockwise(currentDirection);
+            continue;
+        }
+
+        const nextPointKey = nextPoint.getUniqueKey();
+        // Not necessary to test for already visited points; they're either:
+        // a) already determined as a looping point
+        // b) not possible to mutate due to already being visited
+        if (testLoops && !visitedPoints.has(nextPointKey)) {
+            const nextPointValue = matrix.getValue(nextPoint);
+            matrix.setValue(nextPoint, OBSTACLE_SYMBOL);
+            if (detectLoop(matrix, currentPoint, currentDirection, visitedPointsAndDirections)) loopingPoints.add(nextPointKey);
+            matrix.setValue(nextPoint, nextPointValue);
+        }
+
+        visitedPointsAndDirections.add(pointAndDirectionToString(nextPoint, currentDirection));
+        visitedPoints.add(nextPointKey);
+        currentPoint = nextPoint;
+    }
+
+    return [visitedPoints.size, loopingPoints.size];
 }
 
 export function solvePart1(input: string): number {
     const [matrix, startingPoint, startingDirection] = parseInput(input);
-    const [visitedPoints] = simulateWalk(matrix, startingPoint, startingDirection);
-    return visitedPoints.length;
+    const [visitedCount] = simulateWalk(matrix, startingPoint, startingDirection);
+    return visitedCount;
 }
 
 export function solvePart2(input: string): number {
     const [matrix, startingPoint, startingDirection] = parseInput(input);
-    const [visitedPoints] = simulateWalk(matrix, startingPoint, startingDirection);
-
-    return visitedPoints.countBy((visitedPoint) => {
-        const currentValue = matrix.getValue(visitedPoint);
-        matrix.setValue(visitedPoint, OBSTACLE_SYMBOL);
-        const [, isLooping] = simulateWalk(matrix, startingPoint, startingDirection);
-        matrix.setValue(visitedPoint, currentValue);
-        return isLooping;
-    });
+    const [, loopingCount] = simulateWalk(matrix, startingPoint, startingDirection, true);
+    return loopingCount;
 }
