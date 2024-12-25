@@ -642,6 +642,10 @@ export class Matrix<T> implements IGraph {
         });
     }
 
+    mapColumns<T2>(callback: (column: T[], x: number) => T2): T2[] {
+        return this.data.map(callback);
+    }
+
     mapPoints<T2>(callback: (point: Point2D, value: T) => T2): Matrix<T2> {
         return new Matrix(this.data
             .map((column, x) => column
