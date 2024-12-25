@@ -1,8 +1,8 @@
 import chai from 'chai';
 import { describe, it } from 'mocha';
-import { solvePart1, solvePart2 } from './solution';
-import answers from './answers';
 import { readFile } from '../../common';
+import answers from './answers';
+import { solvePart1 } from './solution';
 
 chai.should();
 
@@ -14,15 +14,7 @@ describe('year 2023, day 25', function () {
         solvePart1(inputExample).toString().should.equal(answers.part1Example.toString());
     });
 
-    // it('part 1', function () {
-    //     solvePart1(input).toString().should.equal(answers.part1.toString());
-    // });
-
-    // it('part 2 - example', function () {
-    //     solvePart2(inputExample).toString().should.equal(answers.part2Example.toString());
-    // });
-
-    // it('part 2', function () {
-    //     solvePart2(input).toString().should.equal(answers.part2.toString());
-    // });
+    it('part 1', function () {
+        solvePart1(input).toString().should.equal(answers.part1.toString());
+    });
 });

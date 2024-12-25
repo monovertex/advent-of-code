@@ -27,6 +27,7 @@ interface Array<T> {
     sortDescendingNumbers(): Array<number>;
     isEmpty(): boolean;
     isNotEmpty(): boolean;
+    randomItem(): T;
 }
 
 Array.prototype.findLast = function (predicate) {
@@ -167,6 +168,10 @@ Array.prototype.isEmpty = function () {
 
 Array.prototype.isNotEmpty = function () {
     return !this.isEmpty();
+}
+
+Array.prototype.randomItem = function () {
+    return this[Math.floor(Math.random() * this.length)];
 }
 
 interface String {
