@@ -1,17 +1,9 @@
-import { memoize } from '../../common';
 import '../../prototype-extensions';
 
 const ITERATION_COUNT = 2000;
 
-const mix = memoize(
-    (secret: bigint, value: bigint): bigint => value ^ secret,
-    (secret: bigint, value: bigint) => `${secret}-${value}`
-);
-const prune = memoize(
-    (secret: bigint): bigint => secret % 16777216n,
-    (secret: bigint) => secret.toString()
-);
-
+const mix = (secret: bigint, value: bigint): bigint => value ^ secret;
+const prune = (secret: bigint): bigint => secret % 16777216n;
 function computeNextRandom(secret: bigint): bigint {
     const step1 = prune(mix(secret, secret * 64n));
     const step2 = prune(mix(step1, BigInt(Math.floor(Number(step1 / 32n)))));
@@ -34,45 +26,51 @@ export function solvePart1(input: string): bigint {
         .sum()
 }
 
-function computeBestPricesPerChange(secret: bigint): Map<string, number> {
-    let prices: number[] = [];
-    let currentSecret: bigint = secret;
-    for (let iteration = 0; iteration < ITERATION_COUNT; iteration++) {
-        prices.push(Number(currentSecret.toString().toArray().last()));
-        currentSecret = computeNextRandom(currentSecret);
+function computePrices(secret: bigint): Map<string, number> {
+    const priceMap = new Map<string, number>();
+
+    for (
+        let iteration = 0,
+            currentSecret = secret,
+            previousPrice = null,
+            changeSequence = [];
+        iteration < ITERATION_COUNT;
+        iteration++, currentSecret = computeNextRandom(currentSecret)
+    ) {
+        const currentPrice = Number(currentSecret.toString().toArray().last());
+        const currentChange = previousPrice === null ? null : currentPrice - previousPrice;
+        changeSequence.push(currentChange);
+
+        if (iteration >= 4) {
+            changeSequence.shift();
+            const identifier = changeSequence.join(',');
+            if (!priceMap.has(identifier)) {
+                priceMap.set(identifier, currentPrice);
+            }
+        }
+
+        previousPrice = currentPrice;
     }
-    const changes: (number | null)[] = prices.map((price, index) => index > 0 ? price - prices[index - 1] : null);
-    const changesAndPrices: [number, string | null][] = prices.map((price, index) => [
-        price,
-        index >= 4 ? changes.slice(index - 3, index + 1).join(',') : null
-    ]);
-    const changesAndFirstPrice = changesAndPrices
-        .groupBy(([_, identifier]) => identifier)
-        .mapValues((_identifier, pricesAndChanges) =>
-            pricesAndChanges.map(([price]) => price).first());
-    changesAndFirstPrice.delete(null);
-    return changesAndFirstPrice;
+
+    return priceMap;
 }
 
 export function solvePart2(input: string): number {
-    // Represents a list (for each input line) of maps where the last 4 changes for a price are
-    // serialized and represent the key. Then the values of those maps are all the prices for that key.
-    const changesAndFirstPricePerSecret: Map<string, number>[] = input
-        .splitByNewLine()
-        .toBigInts()
-        .map(computeBestPricesPerChange);
+    const totalPriceMap = new Map<string, number>();
+    let bestPrice = 0;
+    input.splitByNewLine().toBigInts()
+        // Represents a list (for each input line) of maps where the last 4 changes for a price are
+        // serialized and represent the key. Then the values of those maps are all the prices for that key.
+        .map(computePrices)
+        // Iterate over all the price keys and sum the prices every time one is encountered.
+        // Keep track of the best price in the same iteration for optimization.
+        .forEach((priceMap) => {
+            priceMap.forEach((price, key) => {
+                const totalPrice = (totalPriceMap.get(key) ?? 0) + price;
+                totalPriceMap.set(key, totalPrice);
+                if (totalPrice > bestPrice) bestPrice = totalPrice;
+            });
+        });
 
-    // Unique list of identifiers (serialized sets of 4 changes).
-    const allIdentifiers = new Set(changesAndFirstPricePerSecret
-        .flatMap((pricesAndChanges) => pricesAndChanges.keysArray()));
-
-    // For each identifier, sum the best prices.
-    const bestPriceForIdentifiers = allIdentifiers
-        .valuesArray()
-        .map((identifier) => changesAndFirstPricePerSecret
-            .map((changesAndFirstPrice) => changesAndFirstPrice.get(identifier) ?? 0)
-            .sum());
-
-    // We can now determine the best price we can obtain.
-    return bestPriceForIdentifiers.max();
+    return bestPrice;
 }
