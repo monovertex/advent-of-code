@@ -48,23 +48,18 @@ function parseInput(input: string): [ValleyMap, Point2D, Point2D] {
 }
 
 function moveBlizzards(map: ValleyMap): ValleyMap {
-    const newBlizzards: Blizzard[] = map.blizzards
-        .map(({ point, value, direction }) => {
-            const newPoint = point.getOrthogonalNeighbor(direction);
-            const wrappedNewPoint = new Point2D(
-                wrapCoordWithOffset(newPoint.x, map.width - 2),
-                wrapCoordWithOffset(newPoint.y, map.height - 2)
-            );
-            return { point: wrappedNewPoint, value, direction } as Blizzard;
-        });
-
-    const newMatrix = map.mapPoints((point: Point2D, value: string) => {
-        if (value === MAP_SYMBOLS.WALL) return MAP_SYMBOLS.WALL;
-        const newBlizzard = newBlizzards.find((blizzard) => blizzard.point.equals(point));
-        if (!newBlizzard) return MAP_SYMBOLS.EMPTY;
-        return newBlizzard.value;
+    const newMatrix = map.clone();
+    map.blizzards.forEach(({ point }) => newMatrix.setValue(point, MAP_SYMBOLS.EMPTY));
+    const newBlizzards = map.blizzards.map(({ point, direction, value}) => {
+        const newPoint = point.getOrthogonalNeighbor(direction);
+        const wrappedNewPoint = new Point2D(
+            wrapCoordWithOffset(newPoint.x, map.width - 2),
+            wrapCoordWithOffset(newPoint.y, map.height - 2)
+        );
+        const newBlizzard = { point: wrappedNewPoint, value, direction };
+        newMatrix.setValue(wrappedNewPoint, value);
+        return newBlizzard;
     });
-
     return new ValleyMap(newMatrix, newBlizzards);
 }
 

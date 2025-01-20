@@ -616,6 +616,10 @@ export class Matrix<T> implements IGraph {
         return this.data[0].length;
     }
 
+    clone() {
+        return new Matrix(this.data.map(column => column.slice()));
+    }
+
     toString() {
         return this.data.first()
             .zip(...this.data.rest())
