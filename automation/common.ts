@@ -118,7 +118,7 @@ export function solvePart2(input: string): number {
 }
 
 export function buildTestContent(year: string, day: string): string {
-    return `import chai from 'chai';
+    return `import * as chai from 'chai';
 import { describe, it } from 'mocha';
 import { solvePart1, solvePart2 } from './solution';
 import answers from './answers';

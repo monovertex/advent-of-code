@@ -1,4 +1,4 @@
-import { aStar, IGraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTIONS_2D_LIST, Point2D, PriorityQueue, stringToStringMatrix, walkGraph } from '../../common';
+import { aStar, IGraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTIONS_2D_LIST, Point2D, PriorityQueue, stringToStringMatrix } from '../../common';
 import '../../prototype-extensions';
 
 enum MAP_SYMBOLS {

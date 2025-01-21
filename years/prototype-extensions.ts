@@ -1,6 +1,4 @@
 interface Array<T> {
-    findLast(predicate: Function): T;
-    findLastIndex(predicate: Function): number;
     reject(predicate: (item: T) => boolean): Array<T>;
     without(...items: Array<T>): Array<T>;
     countBy(predicate: (item: T, index: number) => boolean): number;
@@ -28,20 +26,6 @@ interface Array<T> {
     isEmpty(): boolean;
     isNotEmpty(): boolean;
     randomItem(): T;
-}
-
-Array.prototype.findLast = function (predicate) {
-    for (let i = this.length - 1; i >= 0; i--) {
-        if (predicate(this[i])) return this[i];
-    }
-    return undefined;
-}
-
-Array.prototype.findLastIndex = function (predicate) {
-    for (let i = this.length - 1; i >= 0; i--) {
-        if (predicate(this[i])) return i;
-    }
-    return -1;
 }
 
 Array.prototype.reject = function (predicate) {

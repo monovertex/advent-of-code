@@ -9,33 +9,32 @@
   "config": {
     "year": "2024",
     "aocHost": "https://adventofcode.com",
-    "userAgent": "Repository TBD by Cosmin Stamate (@monovertex) <cos.stamate@gmail.com>"
+    "userAgent": "Repository https://github.com/monovertex/advent-of-code by Cosmin Stamate (@monovertex) <cos.stamate@gmail.com>"
   },
   "dependencies": {
-    "@types/chai": "^4.3.11",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^20.10.3",
-    "chai": "^4.3.10",
+    "@types/chai": "^5.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.7",
+    "chai": "^5.1.2",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.3.1",
-    "mocha": "^10.2.0",
+    "dotenv": "^16.4.7",
+    "mocha": "^11.0.1",
     "node-fetch": "^3.3.2",
     "node-html-markdown": "^1.3.0",
-    "ts-mocha": "^10.0.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.3.2",
-    "z3-solver": "^4.12.4"
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "z3-solver": "^4.13.4"
   },
   "exports": {
     "./*": "./*"
   },
   "volta": {
-    "node": "20.10.0"
+    "node": "22.13.0"
   },
   "scripts": {
-    "init": "node --no-warnings --loader ts-node/esm ./automation/day-init.ts",
-    "submit": "node --no-warnings --loader ts-node/esm ./automation/day-submit.ts",
-    "day": "node --no-warnings --loader ts-node/esm ./automation/day-run.ts",
-    "year": "node --no-warnings --loader ts-node/esm ./automation/year-run.ts"
+    "init": "tsx ./automation/day-init.ts",
+    "submit": "tsx ./automation/day-submit.ts",
+    "day": "tsx ./automation/day-run.ts",
+    "year": "tsx ./automation/year-run.ts"
   }
 }

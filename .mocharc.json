@@ -1,7 +1,6 @@
 {
     "node-option": [
-        "loader=ts-node/esm",
-        "no-warnings",
+        "import=tsx",
         "max-old-space-size=4096"
     ]
 }
