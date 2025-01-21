@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function hash(input: string): number {
     return input.toArray().reduce((result, char) => ((result + char.charCodeAt(0)) * 17) % 256, 0);

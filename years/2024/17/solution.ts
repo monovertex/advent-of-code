@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 enum REGISTER_IDENTIFIER { A = 'A', B = 'B', C = 'C' };
 

@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 class Equation {
     result: bigint;

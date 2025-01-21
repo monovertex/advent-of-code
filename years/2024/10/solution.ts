@@ -1,5 +1,5 @@
-import { Matrix, Point2D, stringToNumberMatrix } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, Point2D, stringToNumberMatrix } from '@common';
+import '@prototype-extensions';
 
 function isNeighborValid(_point: Point2D, value: number, _neighborPoint: Point2D, neighborValue: number) {
     return neighborValue === value + 1;

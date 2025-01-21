@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function checkReportSafety(report: number[]): boolean {
     const reportAsString = report.join('');

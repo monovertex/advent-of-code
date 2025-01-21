@@ -1,5 +1,5 @@
-import { memoize } from '../../common';
-import '../../prototype-extensions';
+import { memoize } from '@common';
+import '@prototype-extensions';
 
 function splitNumber(input: bigint): [bigint, bigint] {
     const inputAsString = input.toString();

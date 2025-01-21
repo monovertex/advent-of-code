@@ -1,5 +1,5 @@
-import { findIndexOfPoint, Matrix, Point2D, stringToPoint2D } from '../../common';
-import '../../prototype-extensions';
+import { findIndexOfPoint, Matrix, Point2D, stringToPoint2D } from '@common';
+import '@prototype-extensions';
 
 function getShortestDistance(map: Matrix<number>, obstaclePoints: Point2D[] = []): number | null {
     return map.shortestDistance(

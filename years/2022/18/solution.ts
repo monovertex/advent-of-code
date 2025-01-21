@@ -1,5 +1,5 @@
-import { breadthFirstSearch, findIndexOfPoint, IGraphNode, ORTHOGONAL_DIRECTION_VECTORS_3D, Point3D, stringToPoint3DArray } from '../../common';
-import '../../prototype-extensions';
+import { breadthFirstSearch, findIndexOfPoint, IGraphNode, ORTHOGONAL_DIRECTION_VECTORS_3D, Point3D, stringToPoint3DArray } from '@common';
+import '@prototype-extensions';
 
 function parseInput(input: string): Point3D[] {
     return stringToPoint3DArray(input, '\n');

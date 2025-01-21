@@ -1,5 +1,5 @@
-import { GraphNode, Graph } from '../../common';
-import '../../prototype-extensions';
+import { GraphNode, Graph } from '@common';
+import '@prototype-extensions';
 
 function tryPartition(graph: Graph): [number, number] | null {
     const startNode = graph.nodeList.randomItem();

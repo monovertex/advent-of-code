@@ -1,5 +1,5 @@
-import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, findIndexOfPoint } from '../../common';
-import '../../prototype-extensions';
+import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, findIndexOfPoint } from '@common';
+import '@prototype-extensions';
 
 const MAX_WIDTH = 6;
 const PIECES = [

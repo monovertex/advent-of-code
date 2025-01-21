@@ -1,5 +1,5 @@
-import { Matrix, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, ORTHOGONAL_DIRECTIONS, Point2D, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 enum MAP_SYMBOL {
     EMPTY = '.',

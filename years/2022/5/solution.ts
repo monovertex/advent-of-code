@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function parseInput(input: string): [Array<Array<string>>, Array<Array<number>>] {
     const [inputStacks, rawMoves] = input.splitByDoubleNewLine();

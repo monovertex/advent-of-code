@@ -1,5 +1,5 @@
-import { DIAGONAL_DIRECTIONS, DIAGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToPoint2DArray } from '../../common';
-import '../../prototype-extensions';
+import { DIAGONAL_DIRECTIONS, DIAGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToPoint2DArray } from '@common';
+import '@prototype-extensions';
 
 const SAND_START = new Point2D<number>(500, 0);
 

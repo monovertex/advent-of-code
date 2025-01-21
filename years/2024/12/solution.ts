@@ -1,5 +1,5 @@
-import { ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, rotateDirectionCounterClockwise, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, rotateDirectionCounterClockwise, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 type Region = {
     identifier: string;

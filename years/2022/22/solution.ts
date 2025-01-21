@@ -1,5 +1,5 @@
-import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, rotateDirectionCounterClockwise, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, rotateDirectionCounterClockwise, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 enum MAP_SYMBOLS { WALKABLE = '.', WALL = '#', EMPTY = ' ' }
 const isSpaceWalkable = (space: string) => space === MAP_SYMBOLS.WALKABLE;

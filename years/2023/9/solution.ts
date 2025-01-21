@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function generateSequenceNumber(sequence: number[], forward: boolean): number {
     if (sequence.min() === sequence.max()) return sequence.first();

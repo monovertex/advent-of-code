@@ -1,5 +1,5 @@
-import { Point3D, stringToPoint3D, stringToPoint3DArray } from '../../common';
-import '../../prototype-extensions';
+import { Point3D, stringToPoint3D, stringToPoint3DArray } from '@common';
+import '@prototype-extensions';
 
 function parseBricks(input: string): Point3D[][] {
     return input.splitByNewLine().map((line) => {

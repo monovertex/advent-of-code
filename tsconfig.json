@@ -5,7 +5,11 @@
         "target": "ESNext",
         "allowJs": false,
         "esModuleInterop": true,
-        "strict": true
+        "strict": true,
+        "paths": {
+            "@prototype-extensions": ["./years/prototype-extensions"],
+            "@common": ["./years/common"],
+        }
     },
     "exclude": ["node_modules"],
     "typeAcquisition": {

@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const SCORE_MAP: Map<string, number> = new Map([
     ['A', 1],

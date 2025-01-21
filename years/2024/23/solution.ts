@@ -1,5 +1,5 @@
-import { Graph, GraphNode } from '../../common';
-import '../../prototype-extensions';
+import { Graph, GraphNode } from '@common';
+import '@prototype-extensions';
 
 type Clique = GraphNode[];
 

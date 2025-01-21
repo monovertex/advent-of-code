@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const CARD_STRENGTH = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'T', 'J', 'Q', 'K', 'A'];
 const CARD_STRENGTH_WITH_JOKER = ['J', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'T', 'Q', 'K', 'A'];

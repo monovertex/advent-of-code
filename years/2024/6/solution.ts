@@ -1,5 +1,5 @@
-import { Matrix, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, ORTHOGONAL_DIRECTIONS, Point2D, rotateDirectionClockwise, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 const GUARD_ORIENTATION_SYMBOL_TO_DIRECTION = new Map([
     ['^', ORTHOGONAL_DIRECTIONS.Y_POSITIVE],

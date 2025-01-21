@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const DIGIT_MAP: [string, number][] = [
     ['one', 1],

@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { describe, it } from 'mocha';
-import { readFile } from '../../common';
+import { readFile } from '@common';
 import answers from './answers';
 import { solvePart1 } from './solution';
 

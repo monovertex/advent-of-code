@@ -1,5 +1,5 @@
-import { getQuadraticCriticalPoints } from '../../common';
-import '../../prototype-extensions';
+import { getQuadraticCriticalPoints } from '@common';
+import '@prototype-extensions';
 
 function getLineNumbers(line: string): number[] {
     return line.split(':')[1].splitByWhitespace().toNumbers();

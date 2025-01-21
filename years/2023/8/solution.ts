@@ -1,5 +1,5 @@
-import { GraphNode, findLeastCommonMultipleOfList } from '../../common';
-import '../../prototype-extensions';
+import { GraphNode, findLeastCommonMultipleOfList } from '@common';
+import '@prototype-extensions';
 
 class Node extends GraphNode {
     neighbors: Node[] = [];

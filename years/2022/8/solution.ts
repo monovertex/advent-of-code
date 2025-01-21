@@ -1,5 +1,5 @@
-import '../../prototype-extensions';
-import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D, Point2D, stringToNumberMatrix } from '../../common';
+import '@prototype-extensions';
+import { Matrix, ORTHOGONAL_DIRECTION_VECTORS_2D, Point2D, stringToNumberMatrix } from '@common';
 
 function isTreeVisible(treeLines: number[][], treeHeight: number) {
     return treeLines.some((line: number[]) => line.max() < treeHeight);

@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const SNAFU_DIGITS = Object.freeze(['=', '-', '0', '1', '2']);
 

@@ -1,5 +1,5 @@
-import { ALL_DIRECTION_VECTORS_2D, DIAGONAL_DIRECTION_VECTORS_2D_MAP, DIAGONAL_DIRECTIONS, Matrix, Point2D, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { ALL_DIRECTION_VECTORS_2D, DIAGONAL_DIRECTION_VECTORS_2D_MAP, DIAGONAL_DIRECTIONS, Matrix, Point2D, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 type Pattern = {
     letters: string[],

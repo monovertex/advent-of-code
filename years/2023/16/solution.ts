@@ -1,5 +1,5 @@
-import { Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 const TILE_TYPE = {
     EMPTY: '.',

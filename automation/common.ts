@@ -105,7 +105,7 @@ export function extractAnswersFromDescription(description: HTMLElement): Object 
 }
 
 export function buildSolutionContent(): string {
-    return `import '../../prototype-extensions';
+    return `import '@prototype-extensions';
 
 export function solvePart1(input: string): number {
     return 0;
@@ -122,7 +122,7 @@ export function buildTestContent(year: string, day: string): string {
 import { describe, it } from 'mocha';
 import { solvePart1, solvePart2 } from './solution';
 import answers from './answers';
-import { readFile } from '../../common';
+import { readFile } from '@common';
 
 chai.should();
 

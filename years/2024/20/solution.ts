@@ -1,5 +1,5 @@
-import { findIndexOfPoint, Matrix, memoize, Point2D, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { findIndexOfPoint, Matrix, memoize, Point2D, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 enum MAP_SYMBOLS { EMPTY = ',', WALL = '#', START = 'S', END = 'E' };
 

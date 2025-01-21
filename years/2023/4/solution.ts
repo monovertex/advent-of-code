@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function parseInput(input: string) {
     return input.splitByNewLine().map((line) => {

@@ -1,5 +1,5 @@
 import util from 'util';
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const AVAILABLE_MINUTES_PART_1 = 24;
 const AVAILABLE_MINUTES_PART_2 = 32;

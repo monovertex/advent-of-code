@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function overlaps([[start1, end1], [start2, end2]]: [[number, number], [number, number]]): boolean {
     return start1 <= end2 && start2 <= end1;

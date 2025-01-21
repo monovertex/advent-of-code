@@ -1,5 +1,5 @@
-import { stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 function getVerticalReflectionOffset(pattern: string[][], tolerableErrorCount: number): number | null {
     for (let index = 0; index < pattern.length - 1; index++) {

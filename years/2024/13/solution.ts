@@ -1,5 +1,5 @@
-import { Point2D } from '../../common';
-import '../../prototype-extensions';
+import { Point2D } from '@common';
+import '@prototype-extensions';
 
 type Equation = [Point2D<bigint>, Point2D<bigint>, Point2D<bigint>];
 

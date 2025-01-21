@@ -1,5 +1,5 @@
-import { mergeIntervals, Point2D } from '../../common';
-import '../../prototype-extensions';
+import { mergeIntervals, Point2D } from '@common';
+import '@prototype-extensions';
 
 const PART_1_ROW_Y = 2_000_000;
 const PART_1_ROW_Y_EXAMPLE = 10;

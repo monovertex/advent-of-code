@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function findMarker(input: string, requiredMarkerLength: number): number {
     let marker: string[] = [];

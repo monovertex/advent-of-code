@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const RULE_REGEX = /^(.+?) (AND|OR|XOR) (.+?) -> (.+?)$/;
 enum OPERATOR { AND = 'AND', OR = 'OR', XOR = 'XOR' };

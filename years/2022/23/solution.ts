@@ -1,5 +1,5 @@
-import { DIAGONAL_DIRECTIONS, DIAGONAL_DIRECTIONS_2D_LIST, findIndexOfPoint, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTIONS_2D_LIST, Point2D, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { DIAGONAL_DIRECTIONS, DIAGONAL_DIRECTIONS_2D_LIST, findIndexOfPoint, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTIONS_2D_LIST, Point2D, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 type Decision = [ORTHOGONAL_DIRECTIONS, (ORTHOGONAL_DIRECTIONS | DIAGONAL_DIRECTIONS)[]];
 

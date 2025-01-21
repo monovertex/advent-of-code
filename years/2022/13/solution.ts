@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const DIVIDERS = [[[2]], [[6]]];
 

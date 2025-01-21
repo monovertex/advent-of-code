@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function priorityForCharacter(input: string): number {
     const code = input.charCodeAt(0);

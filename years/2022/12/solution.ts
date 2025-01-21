@@ -1,5 +1,5 @@
-import { Matrix, Point2D, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, Point2D, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 const START_POINT_VALUE = 'S';
 const DEST_POINT_VALUE = 'E';

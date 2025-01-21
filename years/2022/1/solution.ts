@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 function sumTopElves(input: string, elfCount: number): number {
     return input

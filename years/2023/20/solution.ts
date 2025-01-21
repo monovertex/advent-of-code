@@ -1,5 +1,5 @@
-import '../../prototype-extensions';
-import { findLeastCommonMultipleOfList } from '../../common';
+import '@prototype-extensions';
+import { findLeastCommonMultipleOfList } from '@common';
 
 interface Module {
     name: string,

@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const FILESYSTEM_SIZE = 70_000_000;
 const MIN_SPACE_NEEDED = 30_000_000;

@@ -1,5 +1,5 @@
-import { memoize } from '../../common';
-import '../../prototype-extensions';
+import { memoize } from '@common';
+import '@prototype-extensions';
 
 function iterate(patterns: string[], design: string): bigint {
     const iterateWithMemoization = memoize(

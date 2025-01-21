@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const QUERY_TIMER_START = 20;
 const QUERY_TIMER_INTERVAL = 40;

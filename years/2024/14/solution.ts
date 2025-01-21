@@ -1,5 +1,5 @@
-import { clearOutput, Point2D, wait } from '../../common';
-import '../../prototype-extensions';
+import { clearOutput, Point2D, wait } from '@common';
+import '@prototype-extensions';
 
 enum QUADRANT {
     TOP_LEFT = '0',

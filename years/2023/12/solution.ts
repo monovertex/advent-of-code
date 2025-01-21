@@ -1,5 +1,5 @@
-import { memoize } from '../../common';
-import '../../prototype-extensions';
+import { memoize } from '@common';
+import '@prototype-extensions';
 
 const SPRING_TYPE = {
     UNKNOWN: '?',

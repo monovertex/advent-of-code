@@ -1,5 +1,5 @@
-import { Matrix, memoize, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTIONS_2D_LIST, Point2D } from '../../common';
-import '../../prototype-extensions';
+import { Matrix, memoize, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTIONS_2D_LIST, Point2D } from '@common';
+import '@prototype-extensions';
 
 type PathsMap = Map<string, Map<string, string[][]>>;
 

@@ -1,5 +1,5 @@
-import { GraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, WeightedDirectedGraph, stringToStringMatrix } from '../../common';
-import '../../prototype-extensions';
+import { GraphNode, Matrix, ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, WeightedDirectedGraph, stringToStringMatrix } from '@common';
+import '@prototype-extensions';
 
 const TILE_TYPE = Object.freeze({
     PATH: '.',

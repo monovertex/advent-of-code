@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { describe, it } from 'mocha';
 import { solvePart1 } from './solution';
 import answers from './answers';
-import { readFile } from '../../common';
+import { readFile } from '@common';
 
 chai.should();
 

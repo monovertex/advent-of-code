@@ -1,5 +1,5 @@
-import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, shoelaceArea } from '../../common';
-import '../../prototype-extensions';
+import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D, shoelaceArea } from '@common';
+import '@prototype-extensions';
 
 const DIRECTION_INPUT_TO_VECTOR_MAP = new Map([
     ['R', ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.X_POSITIVE)!],

@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const OPERATION_REGEX = /mul\((\d+),(\d+)\)/g;
 const OPERAND_REGEX = /(\d+)/g;

@@ -1,4 +1,4 @@
-import '../../prototype-extensions';
+import '@prototype-extensions';
 
 const IDENTIFIER_HUMAN = 'humn';
 const IDENTIFIER_ROOT = 'root';

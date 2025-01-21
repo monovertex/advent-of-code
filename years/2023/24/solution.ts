@@ -1,6 +1,6 @@
 import { init as initZ3 } from 'z3-solver';
-import { Point2D, Point3D } from '../../common';
-import '../../prototype-extensions';
+import { Point2D, Point3D } from '@common';
+import '@prototype-extensions';
 
 function isPointInBounds(point: Point2D<bigint>, boundary: [bigint, bigint]): boolean {
     if (point.x < boundary[0] || point.x > boundary[1]) return false;

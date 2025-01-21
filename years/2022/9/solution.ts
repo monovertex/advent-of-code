@@ -1,5 +1,5 @@
-import '../../prototype-extensions';
-import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D } from '../../common';
+import '@prototype-extensions';
+import { ORTHOGONAL_DIRECTIONS, ORTHOGONAL_DIRECTION_VECTORS_2D_MAP, Point2D } from '@common';
 
 const DIRECTION_DECODE_MAP = new Map([
     ['U', ORTHOGONAL_DIRECTION_VECTORS_2D_MAP.get(ORTHOGONAL_DIRECTIONS.Y_POSITIVE)],

@@ -1,5 +1,5 @@
-import '../../prototype-extensions';
-import { Graph, GraphNode } from '../../common';
+import '@prototype-extensions';
+import { Graph, GraphNode } from '@common';
 
 const INPUT_LINE_REGEX = /^Valve (\w+) has flow rate=(\d+); tunnels? leads? to valves? (.*)$/;
 
