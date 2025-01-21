@@ -26,7 +26,7 @@ export function solvePart1(input: string): any {
 
 export function solvePart2(input: string): any {
     const [heightMatrix, , destPoint] = inputToMap(input);
-    const [, distance] = heightMatrix.breadthFirstSearch(
+    const { distance }= heightMatrix.breadthFirstSearch(
         destPoint,
         (point, height) => height === 0,
         (point, height, neighborPoint, neighborHeight) => height - neighborHeight <= 1

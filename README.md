@@ -6,7 +6,7 @@ https://adventofcode.com
 
 - [x] Submit result for input on Part 1 -> if successful, create test case and forgo future submitting
 - [x] Submit result for input on Part 2 -> if successful, create test case and forgo future submitting
-- [ ] Finish 2022 & 2023 solutions
+- [x] Finish 2022 & 2023 solutions
 - [ ] Figure out a way to allow imports from root folder to simplify imports
 - [ ] Split `years` into `lib` and `src` folders
 - [ ] Split common & prototype extensions into separate files
